@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DevExpress.Data.Filtering.Helpers;
 
-namespace CoffeMakcer.Model
+namespace CoffeeMaker_Client.Model
 {
    public class User
    {

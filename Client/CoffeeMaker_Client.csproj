@@ -67,7 +67,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Database\Database.cs" />
     <Compile Include="Model\User.cs" />
+    <Compile Include="ViewModel\Class\Constants.cs" />
     <Compile Include="ViewModel\Class\RelayCommand.cs" />
     <Compile Include="ViewModel\CoffeeMaker_Vmd.cs" />
     <Page Include="View\MainWindow.xaml">
