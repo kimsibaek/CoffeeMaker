@@ -68,6 +68,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\User.cs" />
+    <Compile Include="Tcp\TcpService.cs" />
     <Compile Include="ViewModel\Class\RelayCommand.cs" />
     <Compile Include="ViewModel\CoffeeMaker_Vmd.cs" />
     <Page Include="View\MainWindow.xaml">
