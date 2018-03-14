@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using CoffeMakcer.Model;
+using CoffeMaker.ViewModel;
 
 
 namespace CoffeMakcer.ViewModel
@@ -13,11 +14,11 @@ namespace CoffeMakcer.ViewModel
     class CoffeeMaker_Vmd :ICommand
     {
         #region Private Members
-        Drink cafucino = new Drink();
+
+        private RelayCommand _drinkCommand;
         #endregion
            
         #region Properties
-
         
         
         #endregion
@@ -32,8 +33,17 @@ namespace CoffeMakcer.ViewModel
 
         #region Command
 
-
-
+        public ICommand Cafucino
+        {
+            get
+            {
+                if (_drinkCommand == null)
+                {
+                    _drinkCommand = new RelayCommand(Execute,CanExecute);
+                }
+                return _drinkCommand;
+            }
+        }
         #endregion
 
         #region IEventHandler

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CoffeMakcer.Model
 {
-    class Drink
+    abstract class Drink
     {
         private string _name;
         private string _qty;
@@ -36,5 +36,24 @@ namespace CoffeMakcer.Model
             get { return _descriotn; }
             set { _descriotn = value; }
         }
+    }
+
+    class Cafucino : Drink
+    {
+        public Cafucino()
+        {
+            this.Name = "cafucino";
+            this.Price = "3500원";
+        }
+    }
+
+    class Americano : Drink
+    {
+
+    }
+
+    class Cafelatte : Drink
+    {
+
     }
 }
