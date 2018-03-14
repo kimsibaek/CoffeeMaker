@@ -26,7 +26,7 @@ namespace CoffeMakcer.ViewModel
 
         public CoffeeMaker_Vmd()
         {
-            Database.Database db = new Database.Database();
+            
         }
         #endregion
 
