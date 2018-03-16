@@ -6,22 +6,34 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using CoffeeMaker_Client;
-using CoffeeMaker_Client.Model;
-using CoffeeMaker_Client.ViewModel;
-using static CoffeeMaker_Client.ViewModel.Constants;
+using CoffeMakcer.Model;
+using CoffeMaker.ViewModel;
+using CoffeMakcer.Tcp;
 
-
-namespace CoffeeMaker_Client.ViewModel
+namespace CoffeMakcer.ViewModel
 {
     class CoffeeMaker_Vmd 
     {
         #region Private Members
 
         private RelayCommand _drinkCommand;
+        private string _sendMsg;
+        TcpService tcp = null;
         #endregion
 
         #region Properties
+        public string SendMsg
+        {
+            get
+            {
+                return _sendMsg;
+            }
+            set
+            {
+                _sendMsg = value;
+            }
+        }
+
 
         public List<Drink> Drink { get; } = new List<Drink>();
 
@@ -31,6 +43,7 @@ namespace CoffeeMaker_Client.ViewModel
 
         public CoffeeMaker_Vmd()
         {
+            tcp = new TcpService();
             Database database = new Database();
         }
         #endregion
@@ -56,6 +69,14 @@ namespace CoffeeMaker_Client.ViewModel
                     _drinkCommand = new RelayCommand(AmericanoExecute, CanExecute);
                 }
                 return _drinkCommand;
+            }
+        }
+
+        public ICommand SendMessageCommand
+        {
+            get
+            {
+                return new RelayCommand(SendMessage);
             }
         }
         #endregion
@@ -139,6 +160,14 @@ namespace CoffeeMaker_Client.ViewModel
 
        
 
-        
+        public void Execute(object parameter)
+        {
+            MessageBox.Show("HIHI");
+        }
+        public void SendMessage(object parameter)
+        {
+            tcp.SendMessage(SendMsg);
+        }
+        public event EventHandler CanExecuteChanged;
     }
 }

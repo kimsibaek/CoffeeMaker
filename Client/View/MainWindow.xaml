@@ -36,14 +36,17 @@
             <Grid.ColumnDefinitions>
 
                 <ColumnDefinition Width="10"/>
-               
+
                 <ColumnDefinition Width="100"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="386*"/>
+                <ColumnDefinition Width="285*"/>
                 <ColumnDefinition Width="10"/>
 
             </Grid.ColumnDefinitions>
             <Label x:Name="label" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Label x:Name="LabelLogo" Content="Coffee" Width="100" RenderTransformOrigin="0.5,4.5" Height="50" Grid.Column="1" Grid.Row="1" FontFamily="Matura MT Script Capitals" FontSize="32" Foreground="#FFE6DCDC" Background="White"/>
+            <Button x:Name="Message" Content="Message" Command="{Binding SendMessageCommand}" Grid.Column="3" HorizontalAlignment="Left" Margin="182,15,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75"/>
+            <TextBox x:Name="textBox" Text="{Binding Path=SendMsg}" Grid.Column="3" HorizontalAlignment="Left" Height="23" Margin="42,17,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         </Grid>
         <Grid Margin="0,0,0,26" Height="400" VerticalAlignment="Bottom">
             <Grid  Height="390" VerticalAlignment="Bottom" Margin="0,0,416,0">
