@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoffeeMaker_Client
+namespace CoffeeMaker_Client.ViewModel.Class
 {
-    public class Constants
-    {
-        public enum DrinkType
+    class Constants
+    {public enum DrinkType
         {
             Cafucino
-            ,Americano
+            , Americano
         }
     }
 }

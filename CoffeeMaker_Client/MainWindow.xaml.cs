@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using CoffeeMaker_Client.ViewModel;
 
 namespace CoffeeMaker_Client
 {
@@ -24,7 +23,6 @@ namespace CoffeeMaker_Client
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new CoffeeMaker_Vmd();
         }
     }
 }

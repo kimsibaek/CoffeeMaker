@@ -1,8 +1,7 @@
 ﻿using System.Data;
 using Oracle.DataAccess.Client;
 using System.Windows;
-
-namespace CoffeeMaker_Client
+namespace CoffeeMaker_Client.Database
 {
     public class Database : IDbConnection
     {

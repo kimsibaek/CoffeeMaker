@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
+using System.Net.Sockets;
+using System.Threading;
 
-namespace CoffeeMaker_Client.Tcp
+namespace CoffeeMaker_Client.TCP
 {
     public class TcpService
     {
@@ -24,7 +23,7 @@ namespace CoffeeMaker_Client.Tcp
             try
             {
                 clientSocket.Connect("172.20.101.237", 9999);
-              //  MessageBox.Show("연결");
+                //  MessageBox.Show("연결");
             }
             catch (SocketException se)
             {

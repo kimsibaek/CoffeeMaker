@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using CoffeeMaker_Client.Model;
-using CoffeeMaker_Client.ViewModel;
-using CoffeeMaker_Client.Tcp;
+using CoffeeMaker_Client.TCP;
+using CoffeeMaker_Client.ViewModel.Class;
+
 
 namespace CoffeeMaker_Client.ViewModel
 {
-    public class CoffeeMaker_Vmd 
+    public class CoffeeMakerViewModel
+
     {
         #region Private Members
 
@@ -35,9 +36,9 @@ namespace CoffeeMaker_Client.ViewModel
             }
         }
 
-        private List<Drink> _drink;
+        private ObservableCollection<Drink> _drink;
 
-        public List<Drink> Drink
+        public ObservableCollection<Drink> Drink
         {
             get { return _drink; }
             set { _drink = value; }
@@ -46,14 +47,13 @@ namespace CoffeeMaker_Client.ViewModel
         #endregion
 
         #region 생성자
-        
 
-        public CoffeeMaker_Vmd(/*MainWindow view*/)
+        public CoffeeMakerViewModel(/*MainWindow view*/)
         {
             //_view = view;
             tcp = new TcpService();
-            Database database = new Database();
-            Drink = new List<Drink>();
+            Database.Database database = new Database.Database();
+            Drink = new ObservableCollection<Drink>();
         }
         #endregion
 
@@ -79,6 +79,7 @@ namespace CoffeeMaker_Client.ViewModel
                 }
                 return _drinkCommand;
             }
+
         }
 
         public ICommand SendMessageCommand => new RelayCommand(SendMessage);
@@ -110,7 +111,7 @@ namespace CoffeeMaker_Client.ViewModel
         #endregion
 
         #region Methods
-        
+
 
         private void DrinkAdd(Constants.DrinkType drinkType)
         {
@@ -119,7 +120,7 @@ namespace CoffeeMaker_Client.ViewModel
             {
                 drink = new Drink();
                 GetDrinkInfo(drink);
-               
+
             }
             else if (drinkType == Constants.DrinkType.Americano)
             {
@@ -132,10 +133,10 @@ namespace CoffeeMaker_Client.ViewModel
         private void GetDrinkInfo(Drink drink)
         {
             drink.OrderNo = "1";
-            drink.Description = "aa";
+            drink.Name = "Americano";
             drink.Qty = "1";
             drink.Price = "3500원";
-            drink.Name = "Cafucino";
+            drink.Description = "aa";
 
             Drink.Add(drink);
 
@@ -165,7 +166,7 @@ namespace CoffeeMaker_Client.ViewModel
         #region IDispose
         #endregion
 
-       
+
 
         public void Execute(object parameter)
         {
