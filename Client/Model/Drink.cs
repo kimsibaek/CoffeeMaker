@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CoffeeMaker_Client.Model;
+
 
 namespace CoffeeMaker_Client.Model
 {
@@ -82,14 +78,4 @@ namespace CoffeeMaker_Client.Model
         }
         #endregion
     }
-
-    //class Americano : Drink
-    //{
-
-    //}
-
-    //class Cafelatte : Drink
-    //{
-
-    //}
 }

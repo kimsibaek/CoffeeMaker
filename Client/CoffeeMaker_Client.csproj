@@ -38,7 +38,6 @@
     <Reference Include="DevExpress.Mvvm.v16.2, Version=16.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpf.Core.v16.2, Version=16.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.Xpf.LayoutControl.v16.2, Version=16.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="Oracle.DataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86" />
     <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -69,9 +68,6 @@
     <Compile Include="View\CoffeeMakerClientView.xaml.cs">
       <DependentUpon>CoffeeMakerClientView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\testPage.xaml.cs">
-      <DependentUpon>testPage.xaml</DependentUpon>
-    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -86,10 +82,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\CoffeeMakerClientView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\testPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

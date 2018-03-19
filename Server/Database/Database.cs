@@ -1,5 +1,5 @@
-﻿using System.Data;
-using System.Data.OracleClient;
+﻿using Oracle.ManagedDataAccess.Client;
+using System.Data;
 using System.Windows;
 
 namespace CoffeeMaker_Client.Database
@@ -85,7 +85,7 @@ namespace CoffeeMaker_Client.Database
 
         public void DbConnection()
         {
-            _connectionString = string.Format("Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={0})(PORT={1}))(CONNECT_DATA=(SERVICE_NAME={2})));User Id = {3}; Password = {4}", _address, _port, _serviceName, _userID, _password);
+            _connectionString = string.Format($"Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={_address})(PORT={_port}))(CONNECT_DATA=(SERVICE_NAME={_serviceName})));User Id = {_userID}; Password = {_password}");
             _connection = new OracleConnection(_connectionString);
 
             Open();

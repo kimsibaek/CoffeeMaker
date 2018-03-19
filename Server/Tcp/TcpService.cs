@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using TCPIP;
 
 namespace CoffeeMaker_Server.Tcp
 {
@@ -35,10 +34,10 @@ namespace CoffeeMaker_Server.Tcp
                 {
                     counter++;
                     client = server.AcceptTcpClient();
-                    DisplayText(">> Accept connection from client");
+                    DisplayText($">> Accept connection from client : {counter}");
 
                     handleClient h_client = new handleClient();
-                    h_client.OnReceived += new handleClient.MessageDisplayHandler(DisplayText);
+                    h_client.OnReceived += new handleClient.MessageDisplayHandler(OrderList);
                     h_client.OnCalculated += new handleClient.CalculateClientCounter(CalculateCounter);
                     h_client.startClient(client, counter);
                 }
@@ -59,6 +58,10 @@ namespace CoffeeMaker_Server.Tcp
         }
 
         private void DisplayText(string text)
+        {
+            Console.WriteLine(text);
+        }
+        private void OrderList(string text)
         {
             Console.WriteLine(text);
         }
