@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\Database.cs" />
+    <Compile Include="Database\DbQuery.cs" />
     <Compile Include="Maker\OrderListener.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,6 +72,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CoffeeMaker\CoffeeMaker.csproj">
+      <Project>{82ae3f17-afe3-48b2-8691-a2536d7b74b8}</Project>
+      <Name>CoffeeMaker</Name>
+    </ProjectReference>
     <ProjectReference Include="TCPIP\TCPIP.csproj">
       <Project>{cd87061d-6f03-4b43-9cb4-5bdddf3e5e70}</Project>
       <Name>TCPIP</Name>

@@ -1,10 +1,11 @@
-﻿using Oracle.ManagedDataAccess.Client;
+﻿using System.Collections.Generic;
+using Oracle.ManagedDataAccess.Client;
 using System.Data;
 using System.Windows;
 
-namespace CoffeeMaker_Client.Database
+namespace CoffeeMaker_Server.Database
 {
-    public class Database : IDbConnection 
+    public partial class Database : IDbConnection
     {
         private string _address = "172.20.101.237";
         private string _port = "1521";
@@ -13,7 +14,8 @@ namespace CoffeeMaker_Client.Database
         private string _password = "1";
 
         private string _connectionString = "";
-   
+        internal static object _lock = new object();
+
         private OracleConnection _connection;
 
         public Database()
@@ -107,6 +109,36 @@ namespace CoffeeMaker_Client.Database
             return data;
         }
 
+        public int ExcutePakage(string pakage, List<OracleParameter> parameters, CommandType commandType, int arrayBindCount)
+        {
+            int result = 0;
+            using (OracleCommand cmd = _connection.CreateCommand())
+            {
+                cmd.CommandText = pakage;
+                cmd.CommandType = commandType;
+                if (parameters != null && parameters.Count > 0)
+                {
+                    if (arrayBindCount > 0)
+                    {
+                        cmd.ArrayBindCount = arrayBindCount;
+
+                        foreach (var param in parameters)
+                        {
+                            OracleParameter parameter = new OracleParameter(param.ParameterName, param.OracleDbType);
+                            parameter.Direction = param.Direction;
+                            parameter.Value = param.Value;
+                            parameter.ArrayBindSize = new int[arrayBindCount];
+                            cmd.Parameters.Add(parameter);
+                        }
+                    }
+                }
+                result = cmd.ExecuteNonQuery();
+
+            }
+
+            return result;
+        }
+
         //반환값 없는 쿼리 실행 메서드(INSERT, UPDATE, DELETE 등)
         public void ExecuteNonQuery(OracleConnection conn, string _query)
         {
@@ -117,7 +149,6 @@ namespace CoffeeMaker_Client.Database
                 command.ExecuteNonQuery();
                 command.Transaction = DbTransaction(conn);
                 command.Transaction.Commit();
-
             }
             catch
             {

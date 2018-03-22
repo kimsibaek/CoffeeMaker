@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using CoffeeMaker_Server.Maker;
 
 namespace CoffeeMaker_Server.Tcp
 {
@@ -63,7 +64,8 @@ namespace CoffeeMaker_Server.Tcp
         }
         private void OrderList(string text)
         {
-            Console.WriteLine(text);
+            OrderListener orderListener = new OrderListener(text);
+            
         }
 
         public void TcpClose()
