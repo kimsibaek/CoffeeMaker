@@ -61,27 +61,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ButtonFactory\Btn.cs" />
+    <Compile Include="ButtonFactory\ButtonStore.cs" />
+    <Compile Include="ButtonFactory\MainBtn.cs" />
+    <Compile Include="ButtonFactory\SubBtn.cs" />
     <Compile Include="TCP\TcpService.cs" />
     <Compile Include="ViewModel\Class\Constants.cs" />
     <Compile Include="ViewModel\Class\RelayCommand.cs" />
     <Compile Include="ViewModel\CoffeeMakerViewModel.cs" />
+    <Compile Include="ViewModel\DecoViewModel.cs" />
     <Compile Include="View\CoffeeMakerClientView.xaml.cs">
       <DependentUpon>CoffeeMakerClientView.xaml</DependentUpon>
     </Compile>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\Database.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
+    <Compile Include="View\DecoView.xaml.cs">
+      <DependentUpon>DecoView.xaml</DependentUpon>
     </Compile>
     <Page Include="View\CoffeeMakerClientView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DecoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

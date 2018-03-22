@@ -9,7 +9,11 @@ using System.Windows.Input;
 using CoffeeMaker_Client.Model;
 using CoffeeMaker_Client.TCP;
 using CoffeeMaker_Client.ViewModel.Class;
-
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
+using System.Windows.Controls.Primitives;
+using CoffeeMaker_Client.ButtonFactory;
 
 namespace CoffeeMaker_Client.ViewModel
 {
@@ -19,6 +23,11 @@ namespace CoffeeMaker_Client.ViewModel
         #region Private Members
 
         private RelayCommand _drinkCommand;
+        private RelayCommand _OKCommand;
+        private RelayCommand _CancelCommand;
+        private ObservableCollection<Drink> _drink;
+        private ObservableCollection<Btn> _buttonList;
+        private ObservableCollection<TextBlock> _optionList;
         private string _sendMsg;
         TcpService tcp = null;
         #endregion
@@ -26,17 +35,9 @@ namespace CoffeeMaker_Client.ViewModel
         #region Properties
         public string SendMsg
         {
-            get
-            {
-                return _sendMsg;
-            }
-            set
-            {
-                _sendMsg = value;
-            }
+            get { return _sendMsg; }
+            set { _sendMsg = value; }
         }
-
-        private ObservableCollection<Drink> _drink;
 
         public ObservableCollection<Drink> Drink
         {
@@ -44,16 +45,28 @@ namespace CoffeeMaker_Client.ViewModel
             set { _drink = value; }
         }
 
+        public ObservableCollection<Btn> ButtonList
+        {
+            get { return _buttonList; }
+            set { _buttonList = value; }
+        }
+
+        public ObservableCollection<TextBlock> OptionList
+        {
+            get { return _optionList; }
+            set { _optionList = value; }
+        }
         #endregion
 
         #region 생성자
 
-        public CoffeeMakerViewModel(/*MainWindow view*/)
+        public CoffeeMakerViewModel()
         {
-            //_view = view;
             tcp = new TcpService();
             Database.Database database = new Database.Database();
             Drink = new ObservableCollection<Drink>();
+            ButtonList = new ObservableCollection<Btn>();
+            TestCode();
         }
         #endregion
 
@@ -81,6 +94,28 @@ namespace CoffeeMaker_Client.ViewModel
             }
 
         }
+        public ICommand OKCommand
+        {
+            get
+            {
+                if (_OKCommand == null)
+                {
+                    _OKCommand = new RelayCommand(OKExecute);
+                }
+                return _OKCommand;
+            }
+        }
+        public ICommand CancelCommand
+        {
+            get
+            {
+                if (_CancelCommand == null)
+                {
+                    _CancelCommand = new RelayCommand(CancelExecute);
+                }
+                return _CancelCommand;
+            }
+        }
 
         public ICommand SendMessageCommand => new RelayCommand(SendMessage);
 
@@ -101,6 +136,14 @@ namespace CoffeeMaker_Client.ViewModel
         {
             DrinkAdd(Constants.DrinkType.Americano);
         }
+        public void OKExecute(object parameter)
+        {
+
+        }
+        public void CancelExecute(object parameter)
+        {
+
+        }
         #endregion
 
         #region IEventHandler
@@ -111,7 +154,34 @@ namespace CoffeeMaker_Client.ViewModel
         #endregion
 
         #region Methods
+        private void TestCode()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Btn _menuBtn;
+                ButtonStore store = new ButtonStore();
+                _menuBtn = store.CreateBtn(BtnType.Sub, "아메리카노", 1500);
+                _menuBtn.Height = 100;
+                _menuBtn.Width = 200;
+                _menuBtn.Click += OnClick;
+                ButtonList.Add(_menuBtn);
+            }
+        }
 
+        private void OnClick(object sender, RoutedEventArgs e)
+        {
+            //SubBtn item = sender as SubBtn;
+            //Drink.Add(new Model.Drink() { Name = item.Name, Price = item.Price, OrderNo = Drink.Count.ToString() } );
+
+            Window window = new Window
+            {
+                Title = "",
+                Content = new View.DecoView(this)
+            };
+            window.Height = 600;
+            window.Width = 500;
+            window.ShowDialog();
+        }
 
         private void DrinkAdd(Constants.DrinkType drinkType)
         {
@@ -135,12 +205,10 @@ namespace CoffeeMaker_Client.ViewModel
             drink.OrderNo = "1";
             drink.Name = "Americano";
             drink.Qty = "1";
-            drink.Price = "3500원";
+            drink.Price = 3500;
             drink.Description = "aa";
 
             Drink.Add(drink);
-
-            //_view.ListViewCoffee.ItemsSource = Drink;
         }
 
         public void Sell()

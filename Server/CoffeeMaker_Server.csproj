@@ -71,12 +71,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="TCPIP\TCPIP.csproj">
-      <Project>{cd87061d-6f03-4b43-9cb4-5bdddf3e5e70}</Project>
-      <Name>TCPIP</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5.2%28x86 및 x64%29</ProductName>

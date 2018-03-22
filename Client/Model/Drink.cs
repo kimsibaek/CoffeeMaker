@@ -10,7 +10,7 @@ namespace CoffeeMaker_Client.Model
         private string _orderNo;
         private string _name;
         private string _qty;
-        private string _price;
+        private int _price;
         private string _description;
         #endregion
 
@@ -45,7 +45,7 @@ namespace CoffeeMaker_Client.Model
             }
         }
 
-        public string Price
+        public int Price
         {
             get { return _price; }
             set
@@ -75,6 +75,25 @@ namespace CoffeeMaker_Client.Model
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
+
+        #region 메서드
+        public void SetDescription(string desc)
+        {
+            Description = desc;
+        }
+        public string GetDescription()
+        {
+            return Description;
+        }
+        public void SetPrice(int price)
+        {
+            this.Price = price;
+        }
+        public int GetCost()
+        {
+            return Price;
         }
         #endregion
     }

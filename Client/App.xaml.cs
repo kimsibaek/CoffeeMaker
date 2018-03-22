@@ -13,5 +13,9 @@ namespace CoffeeMaker_Client
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+
+        }
     }
 }
