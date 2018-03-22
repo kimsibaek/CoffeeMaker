@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeeMaker_Client", "Clien
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BassClass", "Common\BassClass\BassClass.csproj", "{A0178462-C71E-4813-972C-D255487197F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeeMaker", "CoffeeMaker\CoffeeMaker.csproj", "{82AE3F17-AFE3-48B2-8691-A2536D7B74B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{A0178462-C71E-4813-972C-D255487197F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0178462-C71E-4813-972C-D255487197F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0178462-C71E-4813-972C-D255487197F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82AE3F17-AFE3-48B2-8691-A2536D7B74B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82AE3F17-AFE3-48B2-8691-A2536D7B74B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82AE3F17-AFE3-48B2-8691-A2536D7B74B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82AE3F17-AFE3-48B2-8691-A2536D7B74B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
