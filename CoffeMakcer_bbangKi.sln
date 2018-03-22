@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeeMaker_Client", "Client\CoffeeMaker_Client.csproj", "{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeeMaker_Server", "Server\CoffeeMaker_Server.csproj", "{36E21C68-C81F-40D8-91C0-6C0F41DFA8E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeeMaker", "CoffeeMaker\CoffeeMaker.csproj", "{82AE3F17-AFE3-48B2-8691-A2536D7B74B8}"
@@ -23,22 +21,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}.Debug|ARM.Build.0 = Debug|Any CPU
-		{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}.Debug|x64.Build.0 = Debug|Any CPU
-		{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}.Debug|x86.Build.0 = Debug|Any CPU
-		{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}.Release|ARM.ActiveCfg = Release|Any CPU
-		{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}.Release|ARM.Build.0 = Release|Any CPU
-		{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}.Release|x64.ActiveCfg = Release|Any CPU
-		{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}.Release|x64.Build.0 = Release|Any CPU
-		{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}.Release|x86.ActiveCfg = Release|Any CPU
-		{6AADAF89-65DC-4890-94E7-2CBB29F0B12B}.Release|x86.Build.0 = Release|Any CPU
 		{36E21C68-C81F-40D8-91C0-6C0F41DFA8E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{36E21C68-C81F-40D8-91C0-6C0F41DFA8E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36E21C68-C81F-40D8-91C0-6C0F41DFA8E4}.Debug|ARM.ActiveCfg = Debug|Any CPU

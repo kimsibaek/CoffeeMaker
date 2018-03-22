@@ -114,12 +114,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CoffeeMaker\CoffeeMaker.csproj">
-      <Project>{82ae3f17-afe3-48b2-8691-a2536d7b74b8}</Project>
-      <Name>CoffeeMaker</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
