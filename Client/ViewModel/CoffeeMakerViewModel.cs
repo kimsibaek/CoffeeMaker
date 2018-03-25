@@ -14,20 +14,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows.Controls.Primitives;
 using CoffeeMaker_Client.ButtonFactory;
+using CoffeeMaker_Client.TextBlockFactory;
 
 namespace CoffeeMaker_Client.ViewModel
 {
-    public class ScheduleItem
-    {
-        public string Task { get; set; }
-        public double Duration { get; set; }
-        public string Notes { get; set; }
-        public ScheduleItem[] SubItems { get; set; }
-        public ScheduleItem()
-        {
-            SubItems = new ScheduleItem[0];
-        }
-    }
     public class CoffeeMakerViewModel
 
     {
@@ -36,12 +26,15 @@ namespace CoffeeMaker_Client.ViewModel
         private RelayCommand _drinkCommand;
         private RelayCommand _OKCommand;
         private RelayCommand _CancelCommand;
-        private ScheduleItem[] _subItems;
+        private RelayCommand _selectCommand;
+        private DrinkList[] _drinkItems;
         private ObservableCollection<Drink> _drink;
         private ObservableCollection<Btn> _buttonList;
+        private string _information;
         private int _temperatureSelectIdx;
         private int _sizeSelectIdx;
-        private ObservableCollection<TextBlock> _optionList;
+        private ObservableCollection<TB> _optionList;
+        private TextBlock _selectItem;
         private string _sendMsg;
         TcpService tcp = null;
         #endregion
@@ -64,6 +57,11 @@ namespace CoffeeMaker_Client.ViewModel
             get { return _buttonList; }
             set { _buttonList = value; }
         }
+        public string Information
+        {
+            get { return _information; }
+            set { _information = value; }
+        }
         public int TemperatureSelectIdx
         {
             get { return _temperatureSelectIdx; }
@@ -74,15 +72,20 @@ namespace CoffeeMaker_Client.ViewModel
             get { return _sizeSelectIdx; }
             set { _sizeSelectIdx = value; }
         }
-        public ObservableCollection<TextBlock> OptionList
+        public ObservableCollection<TB> OptionList
         {
             get { return _optionList; }
             set { _optionList = value; }
         }
-        public ScheduleItem[] SubItems
+        public TextBlock SelectItem
         {
-            get { return _subItems; }
-            set { _subItems = value; }
+            get { return _selectItem; }
+            set { _selectItem = value; }
+        }
+        public DrinkList[] DrinkItems
+        {
+            get { return _drinkItems; }
+            set { _drinkItems = value; }
         }
         #endregion
 
@@ -95,9 +98,9 @@ namespace CoffeeMaker_Client.ViewModel
             ButtonList = new ObservableCollection<Btn>();
             _temperatureSelectIdx = 0;
             _sizeSelectIdx = 0;
-            OptionList = new ObservableCollection<TextBlock>();
+            OptionList = new ObservableCollection<TB>();
             TestCode();
-            TestItem();
+            //TestItem();
         }
         #endregion
 
@@ -147,6 +150,17 @@ namespace CoffeeMaker_Client.ViewModel
                 return _CancelCommand;
             }
         }
+        public ICommand SelectionChanged
+        {
+            get
+            {
+                if (_selectCommand == null)
+                {
+                    _selectCommand = new RelayCommand(SelectionExecute);
+                }
+                return _selectCommand;
+            }
+        }
 
         public ICommand SendMessageCommand => new RelayCommand(SendMessage);
 
@@ -169,11 +183,18 @@ namespace CoffeeMaker_Client.ViewModel
         }
         public void OKExecute(object parameter)
         {
-
+            var content = window.Content;
+            View.DecoView view = content as View.DecoView;
+            
+            MessageBox.Show($"{TemperatureSelectIdx}, {SizeSelectIdx}, {view.Listboxitem.SelectedItems}");
         }
         public void CancelExecute(object parameter)
         {
             window.Close();
+        }
+        public void SelectionExecute(object parameter)
+        {
+
         }
         #endregion
 
@@ -200,70 +221,72 @@ namespace CoffeeMaker_Client.ViewModel
         }
         private void TestItem()
         {
-            SubItems = new ScheduleItem[]
-            {
-                new ScheduleItem
-                {
-                    Task = "Coding",
-                    Duration = 4,
-                    Notes = "It pays the bills",
-                    SubItems = new ScheduleItem[]
-                    {
-                        new ScheduleItem { Task = "Write", Duration = 2, Notes = "C# or go home" },
-                        new ScheduleItem { Task = "Compile", Duration = 1, Notes = "WTB: SSD" },
-                        new ScheduleItem { Task = "Test", Duration = 1, Notes = "Works on my machine" },
-                    },
-                },
-                new ScheduleItem
-                {
-                    Task = "Meetings",
-                    Duration = 2,
-                    Notes = "A necessary evil",
-                    SubItems = new ScheduleItem[]
-                    {
-                        new ScheduleItem { Task = "Boring", Duration = 1, Notes = "Zzzzzz" },
-                        new ScheduleItem { Task = "Gossipy", Duration = 0.75, Notes = "Oh no he didn't!" },
-                        new ScheduleItem { Task = "Useful", Duration = 0.25, Notes = "Right away, boss" },
-                    },
-                },
-                new ScheduleItem
-                {
-                    Task = "Communicate",
-                    Duration = 1,
-                    Notes = "No man is an island",
-                    SubItems = new ScheduleItem[]
-                    {
-                        new ScheduleItem { Task = "Email", Duration = 0.5, Notes = "So much junk mail" },
-                        new ScheduleItem { Task = "Blogs", Duration = 0.25, Notes = "blogs.msdn.com/delay" },
-                        new ScheduleItem { Task = "Twitter", Duration = 0.25, Notes = "RT: Nothing to report" },
-                    },
-                },
-                new ScheduleItem
-                {
-                    Task = "Eating",
-                    Duration = 1.5,
-                    Notes = "Fuel for the body",
-                    SubItems = new ScheduleItem[]
-                    {
-                        new ScheduleItem { Task = "Lunch", Duration = 1, Notes = "Bag lunch from home" },
-                        new ScheduleItem
-                        {
-                            Task = "Snack",
-                            Duration = 0.5,
-                            Notes = "Still hungry",
-                            SubItems = new ScheduleItem[]
-                            {
-                                new ScheduleItem { Task = "Fruit", Duration = 0.25, Notes = "Good for you" },
-                                new ScheduleItem { Task = "Candy", Duration = 0.25, Notes = "Yummy!" },
-                            },
-                        },
-                    },
-                },
-            };
+            //DrinkItems = new DrinkList[]
+            //{
+            //    new DrinkList
+            //    {
+            //        Number = "0",
+            //        MenuName = "Coding",
+            //        Quantity = 4,
+            //        Price = 10000,
+            //        Option = "It pays the bills",
+            //        DrinkItems = new DrinkList[]
+            //        {
+            //            new DrinkList { MenuName = "Write", Quantity = 2, Option = "C# or go home" },
+            //            new DrinkList { MenuName = "Compile", Quantity = 1, Option = "WTB: SSD" },
+            //            new DrinkList { MenuName = "Test", Quantity = 1, Option = "Works on my machine" },
+            //        },
+            //    },
+            //    new DrinkList
+            //    {
+            //        MenuName = "Meetings",
+            //        Quantity = 3,
+            //        Option = "A necessary evil",
+            //        DrinkItems = new DrinkList[]
+            //        {
+            //            new DrinkList { MenuName = "Boring", Quantity = 1, Option = "Zzzzzz" },
+            //            new DrinkList { MenuName = "Gossipy", Quantity = 1, Option = "Oh no he didn't!" },
+            //            new DrinkList { MenuName = "Useful", Quantity = 1, Option = "Right away, boss" },
+            //        },
+            //    },
+            //    new DrinkList
+            //    {
+            //        MenuName = "Communicate",
+            //        Quantity = 3,
+            //        Option = "No man is an island",
+            //        DrinkItems = new DrinkList[]
+            //        {
+            //            new DrinkList { MenuName = "Email", Quantity = 1, Option = "So much junk mail" },
+            //            new DrinkList { MenuName = "Blogs", Quantity = 1, Option = "blogs.msdn.com/delay" },
+            //            new DrinkList { MenuName = "Twitter", Quantity = 1, Option = "RT: Nothing to report" },
+            //        },
+            //    },
+            //    new DrinkList
+            //    {
+            //        MenuName = "Eating",
+            //        Quantity = 2,
+            //        Option = "Fuel for the body",
+            //        DrinkItems = new DrinkList[]
+            //        {
+            //            new DrinkList { MenuName = "Lunch", Quantity = 1, Option = "Bag lunch from home" },
+            //            new DrinkList
+            //            {
+            //                MenuName = "Snack",
+            //                Quantity = 2,
+            //                Option = "Still hungry",
+            //                DrinkItems = new DrinkList[]
+            //                {
+            //                    new DrinkList { MenuName = "Fruit", Quantity = 1, Option = "Good for you" },
+            //                    new DrinkList { MenuName = "Candy", Quantity = 1, Option = "Yummy!" },
+            //                },
+            //            },
+            //        },
+            //    },
+            //};
         }
         private void OnClick(object sender, RoutedEventArgs e)
         {
-            //SubBtn item = sender as SubBtn;
+            SubBtn item = sender as SubBtn;
             //Drink.Add(new Model.Drink() { Name = item.Name, Price = item.Price, OrderNo = Drink.Count.ToString() } );
 
             window = new Window
@@ -273,15 +296,18 @@ namespace CoffeeMaker_Client.ViewModel
             };
             window.Height = 600;
             window.Width = 500;
-            AddOptionItems();
+            AddOptionItems(item.Content.ToString(), item.Price);
             window.ShowDialog();
         }
-        private void AddOptionItems()
+        private void AddOptionItems(string name, int price)
         {
+            Information = $"Menu : {name},      Price : {price}";
             for (int i = 0; i < 10; i++)
             {
-                TextBlock textBlock = new TextBlock() { Text = "test", Height = 40, Width = 80, Foreground = new SolidColorBrush() { Color = Colors.White }, FontSize = 20, TextAlignment = TextAlignment.Center };
-                OptionList.Add(textBlock);
+                TB tb;
+                TextBlockStore tbStore = new TextBlockStore();
+                tb = tbStore.CreateTB("Deco", 500); 
+                OptionList.Add(tb);
             }
         }
         private void DrinkAdd(Constants.DrinkType drinkType)

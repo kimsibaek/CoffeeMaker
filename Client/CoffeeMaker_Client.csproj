@@ -41,6 +41,7 @@
     <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -65,7 +66,11 @@
     <Compile Include="ButtonFactory\ButtonStore.cs" />
     <Compile Include="ButtonFactory\MainBtn.cs" />
     <Compile Include="ButtonFactory\SubBtn.cs" />
+    <Compile Include="Model\DrinkList.cs" />
     <Compile Include="TCP\TcpService.cs" />
+    <Compile Include="TextBlockFactory\MainTB.cs" />
+    <Compile Include="TextBlockFactory\TB.cs" />
+    <Compile Include="TextBlockFactory\TextBlockStore.cs" />
     <Compile Include="ViewModel\Class\Constants.cs" />
     <Compile Include="ViewModel\Class\RelayCommand.cs" />
     <Compile Include="ViewModel\CoffeeMakerViewModel.cs" />

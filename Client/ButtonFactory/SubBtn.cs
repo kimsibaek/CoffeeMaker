@@ -11,7 +11,7 @@ namespace CoffeeMaker_Client.ButtonFactory
         public int Price { get; set; }
         public SubBtn(string name, int price)
         {
-            Name = name;
+            Content = name;
             Price = price;
         }
     }

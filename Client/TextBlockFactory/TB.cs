@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
-namespace CoffeeMaker_Client.ButtonFactory
+namespace CoffeeMaker_Client.TextBlockFactory
 {
-    class MainBtn : Btn
+    public abstract class TB : TextBlock
     {
-        public MainBtn(string name)
+        public TB()
         {
-            Content = name;
+
         }
+        
     }
 }
