@@ -1,4 +1,5 @@
-﻿
+﻿using CoffeeMaker_Client.TextBlockFactory;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 
@@ -7,89 +8,68 @@ namespace CoffeeMaker_Client.Model
     public class Drink
     {
         #region Private Member
-        private string _orderNo;
         private string _name;
-        private string _qty;
+        private int _cost;
         private int _price;
-        private string _description;
+        private string _option;
+        private List<TB> _optionList;
         #endregion
 
         #region Property
-        public string OrderNo
-        {
-            get { return _orderNo; }
-            set
-            {
-                _orderNo = value;
-                OnPropertyChanged(nameof(OrderNo));
-            }
-        }
-
         public string Name
         {
             get { return _name; }
-            set
-            {
-                _name = value;
-                OnPropertyChanged(nameof(Name));
-            }
+            set { _name = value; }
         }
-
-        public string Qty
+        public int Cost
         {
-            get { return _qty; }
-            set
-            {
-                _qty = value;
-                OnPropertyChanged(nameof(Qty));
-            }
+            get { return _cost; }
+            set { _cost = value; }
         }
-
         public int Price
         {
             get { return _price; }
-            set
-            {
-                _price = value;
-                OnPropertyChanged(nameof(Price));
-            }
+            set { _price = value; }
         }
-
-        public string Description
+        public string Option
         {
-            get { return _description; }
-            set
-            {
-                _description = value;
-                OnPropertyChanged(nameof(Description));
-            }
+            get { return _option; }
+            set { _option = value; }
+        }
+        public List<TB> OptionList
+        {
+            get { return _optionList; }
+            set { _optionList = value; }
         }
         #endregion
-
+        #region 생성자
+        public Drink(string name, int cost)
+        {
+            _name = name;
+            _cost = cost;
+            _price = _cost;
+            _optionList = new List<TB>();
+        }
+        #endregion
         #region EventHandler
-        public event PropertyChangedEventHandler PropertyChanged;
-        #endregion
-
-        #region EventCall
-        public void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
         #endregion
 
         #region 메서드
-        public void SetDescription(string desc)
+        public void AddDeco(TB deco)
         {
-            Description = desc;
+            if (!_optionList.Contains(deco))
+            {
+                _optionList.Add(deco);
+                _price += deco.Price;
+            }
         }
-        public string GetDescription()
+        public void DeleteDeco(TB deco)
         {
-            return Description;
-        }
-        public void SetPrice(int price)
-        {
-            this.Price = price;
+            if (_optionList.Contains(deco))
+            {
+                _optionList.Remove(deco);
+                _price -= deco.Price;
+            }
         }
         public int GetCost()
         {

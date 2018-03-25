@@ -9,8 +9,7 @@ namespace CoffeeMaker_Client.TextBlockFactory
 {
     public class MainTB : TB
     {
-        public int price { get; set; }
-        public MainTB(string name, int price)
+        public MainTB(string menu, int price)
         {
             Height = 40;
             Width = 80;
@@ -18,8 +17,9 @@ namespace CoffeeMaker_Client.TextBlockFactory
             FontSize = 20;
             TextAlignment = System.Windows.TextAlignment.Center;
 
-            Text = name;
-            this.price = price;
+            Text = menu;
+            Menu = menu;
+            Price = price;
         }
     }
 }

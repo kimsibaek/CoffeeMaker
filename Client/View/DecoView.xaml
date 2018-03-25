@@ -112,14 +112,14 @@
             FontSize="20" />
 
         <ListBox
-            
+            x:Name="ListBoxItem"
             SelectedIndex="{Binding TemperatureSelectIdx}"
             Grid.Row="7"
             Grid.Column="1"
-            Background="#FF2F3232" >
+            Background="#FF2F3232">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding SelectionChanged}" CommandParameter="{Binding SelectionChangedParameter}"/>
+                    <i:InvokeCommandAction Command="{Binding SelectionChanged}" CommandParameter="{Binding ElementName=ListBoxItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <ListBox.ItemsPanel>

@@ -22,21 +22,20 @@ namespace CoffeeMaker_Client.ViewModel
 
     {
         #region Private Members
-        private Window window;
-        private RelayCommand _drinkCommand;
-        private RelayCommand _OKCommand;
-        private RelayCommand _CancelCommand;
-        private RelayCommand _selectCommand;
+        private TcpService tcp = null;
+        private string _sendMsg;
         private DrinkList[] _drinkItems;
-        private ObservableCollection<Drink> _drink;
         private ObservableCollection<Btn> _buttonList;
+
+        //DecoView
         private string _information;
         private int _temperatureSelectIdx;
         private int _sizeSelectIdx;
+        private Window window;
         private ObservableCollection<TB> _optionList;
-        private TextBlock _selectItem;
-        private string _sendMsg;
-        TcpService tcp = null;
+        private RelayCommand _OKCommand;
+        private RelayCommand _CancelCommand;
+        private Drink _drink;
         #endregion
 
         #region Properties
@@ -45,13 +44,6 @@ namespace CoffeeMaker_Client.ViewModel
             get { return _sendMsg; }
             set { _sendMsg = value; }
         }
-
-        public ObservableCollection<Drink> Drink
-        {
-            get { return _drink; }
-            set { _drink = value; }
-        }
-
         public ObservableCollection<Btn> ButtonList
         {
             get { return _buttonList; }
@@ -77,11 +69,6 @@ namespace CoffeeMaker_Client.ViewModel
             get { return _optionList; }
             set { _optionList = value; }
         }
-        public TextBlock SelectItem
-        {
-            get { return _selectItem; }
-            set { _selectItem = value; }
-        }
         public DrinkList[] DrinkItems
         {
             get { return _drinkItems; }
@@ -94,40 +81,17 @@ namespace CoffeeMaker_Client.ViewModel
         {
             //tcp = new TcpService();
             //Database.Database database = new Database.Database();
-            Drink = new ObservableCollection<Drink>();
             ButtonList = new ObservableCollection<Btn>();
             _temperatureSelectIdx = 0;
             _sizeSelectIdx = 0;
             OptionList = new ObservableCollection<TB>();
-            TestCode();
+            TestCode(); 
             //TestItem();
         }
         #endregion
 
         #region Command
-        public ICommand Cafucino
-        {
-            get
-            {
-                if (_drinkCommand == null)
-                {
-                    _drinkCommand = new RelayCommand(CafucinoExecute, CanExecute);
-                }
-                return _drinkCommand;
-            }
-        }
-        public ICommand Americano
-        {
-            get
-            {
-                if (_drinkCommand == null)
-                {
-                    _drinkCommand = new RelayCommand(AmericanoExecute, CanExecute);
-                }
-                return _drinkCommand;
-            }
-
-        }
+        public ICommand SendMessageCommand => new RelayCommand(SendMessage);
         public ICommand OKCommand
         {
             get
@@ -154,32 +118,15 @@ namespace CoffeeMaker_Client.ViewModel
         {
             get
             {
-                if (_selectCommand == null)
-                {
-                    _selectCommand = new RelayCommand(SelectionExecute);
-                }
-                return _selectCommand;
+                return new RelayCommand(SelectionExecute);
             }
         }
-
-        public ICommand SendMessageCommand => new RelayCommand(SendMessage);
-
         #endregion
 
         #region Command Method
-        public bool CanExecute(object parameter)
+        public void SendMessage(object parameter)
         {
-            return true;
-        }
-
-        public void CafucinoExecute(object parameter)
-        {
-            DrinkAdd(Constants.DrinkType.Cafucino);
-        }
-
-        public void AmericanoExecute(object parameter)
-        {
-            DrinkAdd(Constants.DrinkType.Americano);
+            tcp.SendMessage(SendMsg);
         }
         public void OKExecute(object parameter)
         {
@@ -195,11 +142,12 @@ namespace CoffeeMaker_Client.ViewModel
         public void SelectionExecute(object parameter)
         {
 
+            //_drink.AddDeco();
         }
         #endregion
 
         #region IEventHandler
-        //public event EventHandler CanExecuteChanged;
+
         #endregion
 
         #region EventMethods
@@ -302,6 +250,8 @@ namespace CoffeeMaker_Client.ViewModel
         private void AddOptionItems(string name, int price)
         {
             Information = $"Menu : {name},      Price : {price}";
+            CreateDrink(name, price);
+            
             for (int i = 0; i < 10; i++)
             {
                 TB tb;
@@ -310,67 +260,16 @@ namespace CoffeeMaker_Client.ViewModel
                 OptionList.Add(tb);
             }
         }
-        private void DrinkAdd(Constants.DrinkType drinkType)
+        private void CreateDrink(string name, int price)
         {
-            Drink drink;
-            if (drinkType == Constants.DrinkType.Cafucino)
-            {
-                drink = new Drink();
-                GetDrinkInfo(drink);
-
-            }
-            else if (drinkType == Constants.DrinkType.Americano)
-            {
-                drink = new Drink();
-                GetDrinkInfo(drink);
-            }
-            //drink.OrderNo;
+            _drink = new Drink(name, price);
+            _drink.AddDeco(new Deco() { Name = "HOT", Price = 0 });
+            _drink.AddDeco(new Deco() { Name = "TALL", Price = 0 });
         }
-
-        private void GetDrinkInfo(Drink drink)
-        {
-            drink.OrderNo = "1";
-            drink.Name = "Americano";
-            drink.Qty = "1";
-            drink.Price = 3500;
-            drink.Description = "aa";
-
-            Drink.Add(drink);
-        }
-
-        public void Sell()
-        {
-
-        }
-
-        public void CalculateCharge()
-        {
-
-        }
-
-        public void GetOrder()
-        {
-            string name;
-            string price;
-            string qty;
-            string desc;
-        }
-
         #endregion
 
         #region IDispose
+
         #endregion
-
-
-
-        public void Execute(object parameter)
-        {
-            MessageBox.Show("HIHI");
-        }
-        public void SendMessage(object parameter)
-        {
-            tcp.SendMessage(SendMsg);
-        }
-        public event EventHandler CanExecuteChanged;
     }
 }
