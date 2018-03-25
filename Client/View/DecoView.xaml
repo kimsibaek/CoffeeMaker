@@ -96,7 +96,8 @@
             FontSize="20" />
 
         <ListBox
-            SelectedIndex="0"
+            
+            SelectedIndex="{Binding TemperatureSelectIdx}"
             Grid.Row="5"
             Grid.Column="1"
             Background="#FF2F3232" >
@@ -110,7 +111,7 @@
         </ListBox>
         
         <ListBox
-            SelectedIndex="0"
+            SelectedIndex="{Binding SizeSelectIdx}"
             Grid.Row="9"
             Grid.Column="1"
             Background="#FF2F3232" >
