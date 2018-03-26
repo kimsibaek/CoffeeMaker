@@ -13,10 +13,10 @@ namespace CoffeeMaker_Client.Model
         public int Quantity { get; set; }
         public int Price { get; set; }
         public string Option { get; set; }
-        public DrinkList[] DrinkItems { get; set; }
+        public List<DrinkList> DrinkItems { get; set; }
         public DrinkList()
         {
-            DrinkItems = new DrinkList[0];
+            DrinkItems = new List<DrinkList>();
         }
     }
 }

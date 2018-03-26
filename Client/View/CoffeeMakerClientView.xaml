@@ -110,11 +110,11 @@
                 </TreeViewItem>
 
                 <!-- Data rows -->
-                <TreeView Grid.Row="1" ItemsSource="{Binding DrinkItems}" BorderBrush="Gray" BorderThickness="0 1 0 0">
+                <TreeView Grid.Row="1" ItemsSource="{Binding DrinkItems, Mode=TwoWay}" BorderBrush="Gray" BorderThickness="0 1 0 0">
                     <TreeView.ItemTemplate>
 
                         <!-- Level 0 template leaves space for 2 child "Toggle" levels -->
-                        <HierarchicalDataTemplate ItemsSource="{Binding DrinkItems}">
+                        <HierarchicalDataTemplate ItemsSource="{Binding DrinkItems, Mode=TwoWay}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="30"/>
@@ -125,16 +125,16 @@
                                     <ColumnDefinition Width="70"/>
                                     <ColumnDefinition Width="125"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="{Binding Number}" Style="{StaticResource TextBlockStyle0}"/>
-                                <TextBlock Grid.Column="1" Text="{Binding MenuName}" Style="{StaticResource TextBlockStyle0}"/>
-                                <TextBlock Grid.Column="4" Text="{Binding Quantity}" Style="{StaticResource TextBlockStyle0}"/>
-                                <TextBlock Grid.Column="5" Text="{Binding Price}" Style="{StaticResource TextBlockStyle0}"/>
-                                <TextBlock Grid.Column="6" Text="{Binding Option}" Style="{StaticResource TextBlockStyle0}"/>
+                                <TextBlock Grid.Column="0" Text="{Binding Number, Mode=TwoWay}" Style="{StaticResource TextBlockStyle0}"/>
+                                <TextBlock Grid.Column="1" Text="{Binding MenuName, Mode=TwoWay}" Style="{StaticResource TextBlockStyle0}"/>
+                                <TextBlock Grid.Column="4" Text="{Binding Quantity, Mode=TwoWay}" Style="{StaticResource TextBlockStyle0}"/>
+                                <TextBlock Grid.Column="5" Text="{Binding Price, Mode=TwoWay}" Style="{StaticResource TextBlockStyle0}"/>
+                                <TextBlock Grid.Column="6" Text="{Binding Option, Mode=TwoWay}" Style="{StaticResource TextBlockStyle0}"/>
                             </Grid>
 
                             <!-- Level 1 template leaves space for 1 child "Toggle" level -->
                             <HierarchicalDataTemplate.ItemTemplate>
-                                <HierarchicalDataTemplate ItemsSource="{Binding DrinkItems}">
+                                <HierarchicalDataTemplate ItemsSource="{Binding DrinkItems, Mode=TwoWay}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="30"/>
@@ -145,16 +145,16 @@
                                             <ColumnDefinition Width="70"/>
                                             <ColumnDefinition Width="125"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="{Binding Number}" Style="{StaticResource TextBlockStyle}"/>
-                                        <TextBlock Grid.Column="1" Text="{Binding MenuName}" Style="{StaticResource TextBlockStyle}"/>
-                                        <TextBlock Grid.Column="4" Text="{Binding Quantity}" Style="{StaticResource TextBlockStyle}"/>
-                                        <TextBlock Grid.Column="5" Text="{Binding Price}" Style="{StaticResource TextBlockStyle}"/>
-                                        <TextBlock Grid.Column="6" Text="{Binding Option}" Style="{StaticResource TextBlockStyle}"/>
+                                        <TextBlock Grid.Column="0" Text="{Binding Number, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding MenuName, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
+                                        <TextBlock Grid.Column="4" Text="{Binding Quantity, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
+                                        <TextBlock Grid.Column="5" Text="{Binding Price, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
+                                        <TextBlock Grid.Column="6" Text="{Binding Option, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
                                     </Grid>
 
                                     <!-- Level 2 template has no children -->
                                     <HierarchicalDataTemplate.ItemTemplate>
-                                        <HierarchicalDataTemplate ItemsSource="{Binding DrinkItems}">
+                                        <HierarchicalDataTemplate ItemsSource="{Binding DrinkItems, Mode=TwoWay}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="30"/>
@@ -165,11 +165,11 @@
                                                     <ColumnDefinition Width="70"/>
                                                     <ColumnDefinition Width="125"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="{Binding Number}" Style="{StaticResource TextBlockStyle}"/>
-                                                <TextBlock Grid.Column="1" Text="{Binding MenuName}" Style="{StaticResource TextBlockStyle}"/>
-                                                <TextBlock Grid.Column="4" Text="{Binding Quantity}" Style="{StaticResource TextBlockStyle}"/>
-                                                <TextBlock Grid.Column="5" Text="{Binding Price}" Style="{StaticResource TextBlockStyle}"/>
-                                                <TextBlock Grid.Column="6" Text="{Binding Option}" Style="{StaticResource TextBlockStyle}"/>
+                                                <TextBlock Grid.Column="0" Text="{Binding Number, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding MenuName, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
+                                                <TextBlock Grid.Column="4" Text="{Binding Quantity, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
+                                                <TextBlock Grid.Column="5" Text="{Binding Price, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
+                                                <TextBlock Grid.Column="6" Text="{Binding Option, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
                                             </Grid>
                                         </HierarchicalDataTemplate>
                                     </HierarchicalDataTemplate.ItemTemplate>
@@ -217,7 +217,7 @@
             Grid.Column="3"
             Background="#FF2F3232" 
             VerticalScrollBarVisibility="Auto" >
-            <ItemsControl ItemsSource="{Binding ButtonList}" Margin="10">
+            <ItemsControl ItemsSource="{Binding ButtonList, Mode=TwoWay}" Margin="10">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Button Height="100"/>

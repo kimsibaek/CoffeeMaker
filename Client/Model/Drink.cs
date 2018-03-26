@@ -71,6 +71,18 @@ namespace CoffeeMaker_Client.Model
                 _price -= deco.Price;
             }
         }
+        public void DeleteDeco(string deco)
+        {
+            foreach (TB item in _optionList)
+            {
+                if (item.Name == deco)
+                {
+                    _optionList.Remove(item);
+                    _price -= item.Price;
+                    return;
+                } 
+            }
+        }
         public int GetCost()
         {
             return Price;

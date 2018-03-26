@@ -41,7 +41,9 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="4"/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="4"/>
             <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="4"/>
@@ -50,7 +52,7 @@
         <Border 
             Grid.Row="1"
             Grid.Column="1"
-            Grid.ColumnSpan="3"
+            Grid.ColumnSpan="5"
             BorderBrush="Black" 
             BorderThickness="1" >
             <Border.Background>
@@ -63,23 +65,31 @@
         </Border>
 
         <TextBlock
-            x:Name="textBlock0" 
             Grid.Row="3"
             Grid.Column="1"
-            Grid.ColumnSpan="3"
             VerticalAlignment="Center" 
-            Text="{Binding Information}" 
+            Text="{Binding CoffeeName}" 
             Foreground="#FFF0EAEA" 
             FontWeight="Bold" 
             FontFamily="Sitka Subheading" 
             FontSize="20" />
-        
+
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="3"
+            Grid.ColumnSpan="3"
+            VerticalAlignment="Center" 
+            Text="{Binding SumPrice, Mode=TwoWay}" 
+            Foreground="#FFF0EAEA" 
+            FontWeight="Bold" 
+            FontFamily="Sitka Subheading" 
+            FontSize="20" />
 
         <TextBlock 
             x:Name="textBlock2" 
             Grid.Row="5"
             Grid.Column="1"
-            Grid.ColumnSpan="3"
+            Grid.ColumnSpan="5"
             VerticalAlignment="Center" 
             Text="Temperature" 
             Foreground="#FFF0EAEA" 
@@ -91,7 +101,7 @@
             x:Name="textBlock3" 
             Grid.Row="9"
             Grid.Column="1"
-            Grid.ColumnSpan="3"
+            Grid.ColumnSpan="5"
             VerticalAlignment="Center" 
             Text="Size" 
             Foreground="#FFF0EAEA" 
@@ -103,7 +113,7 @@
             x:Name="textBlock4" 
             Grid.Row="13"
             Grid.Column="1"
-            Grid.ColumnSpan="3"
+            Grid.ColumnSpan="5"
             VerticalAlignment="Center" 
             Text="Option" 
             Foreground="#FFF0EAEA" 
@@ -112,14 +122,15 @@
             FontSize="20" />
 
         <ListBox
-            x:Name="ListBoxItem"
+            x:Name="tListBoxItem"
             SelectedIndex="{Binding TemperatureSelectIdx}"
             Grid.Row="7"
-            Grid.Column="1"
+            Grid.Column="1" 
+            Grid.ColumnSpan="3"
             Background="#FF2F3232">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding SelectionChanged}" CommandParameter="{Binding ElementName=ListBoxItem}"/>
+                    <i:InvokeCommandAction Command="{Binding TempSelectionChanged}" CommandParameter="{Binding ElementName=tListBoxItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             <ListBox.ItemsPanel>
@@ -132,10 +143,17 @@
         </ListBox>
         
         <ListBox
+            x:Name="sListBoxItem"
             SelectedIndex="{Binding SizeSelectIdx}"
             Grid.Row="11"
             Grid.Column="1"
+            Grid.ColumnSpan="3"
             Background="#FF2F3232" >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding SizeSelectionChanged}" CommandParameter="{Binding ElementName=sListBoxItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal" />
@@ -152,6 +170,7 @@
             Grid.Row="15" 
             Grid.RowSpan="5"
             Grid.Column="1"
+            Grid.ColumnSpan="3"
             Background="#FF2F3232" 
             ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
             SelectionMode="Multiple">
@@ -171,7 +190,7 @@
         
         <Button
             Grid.Row="17" 
-            Grid.Column="3"
+            Grid.Column="5"
             Content="확인"
             Command="{Binding OKCommand}"
             />
@@ -179,7 +198,7 @@
 
         <Button
             Grid.Row="19" 
-            Grid.Column="3"
+            Grid.Column="5"
             Content="취소"
              Command="{Binding CancelCommand}"
             />
