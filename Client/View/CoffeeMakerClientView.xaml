@@ -4,12 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:local="clr-namespace:CoffeeMaker_Client.View"
     xmlns:local2="clr-namespace:CoffeeMaker_Client.ViewModel"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
     mc:Ignorable="d"   
     d:DesignHeight="800" 
-    d:DesignWidth="1100" >
+    d:DesignWidth="1140" >
     <UserControl.DataContext>
         <local2:CoffeeMakerViewModel />
     </UserControl.DataContext>
@@ -18,9 +19,19 @@
         <Style x:Key="ListViewStyle" TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="HorizontalContentAlignment" Value="left"/>
         </Style>
-
+        <Style x:Key="ButtonBackground" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#FFB63838" />
+        </Style>
+        <Style x:Key="ParentNode" TargetType="{x:Type TreeViewItem}">
+            <Setter Property="IsExpanded" Value="True"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+        <Style x:Key="ChildNode" TargetType="{x:Type TreeViewItem}">
+            <Setter Property="IsExpanded" Value="True"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
     </UserControl.Resources>
-    <Grid>
+    <Grid Background="#FF2F3232">
         <Grid.RowDefinitions>
             <RowDefinition Height="4" />
             <RowDefinition Height="100" />
@@ -29,14 +40,16 @@
             <RowDefinition Height="4" />
             <RowDefinition Height="200" />
             <RowDefinition Height="4" />
+            <RowDefinition Height="80" />
+            <RowDefinition Height="4" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4"/>
-            <ColumnDefinition Width="400"/>
+            <ColumnDefinition Width="500"/>
             <ColumnDefinition Width="4"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="4"/>
-            <ColumnDefinition Width="140"/>
+            <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="4"/>
         </Grid.ColumnDefinitions>
 
@@ -90,40 +103,39 @@
                     <TreeViewItem.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition SharedSizeGroup="Num"/>
                                 <ColumnDefinition SharedSizeGroup="MenuName"/>
                                 <ColumnDefinition SharedSizeGroup="Toggle"/>
                                 <ColumnDefinition SharedSizeGroup="Toggle"/>
-                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="35"/>
                                 <ColumnDefinition Width="70"/>
-                                <ColumnDefinition Width="125"/>
+                                <ColumnDefinition Width="225"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Foreground="White" Text="Num" Style="{StaticResource TextBlockBoldStyle}"/>
+                            <TextBlock Grid.Column="0" Height="30" Foreground="White" Text="Num" FontSize="18" Style="{StaticResource TextBlockBoldStyle}"/>
                             <!-- Empty TreeViewItem to measure the size of its ToggleButton into the "Toggle" group-->
-                            <TextBlock Grid.Column="1" Foreground="White" Text="MenuName" Style="{StaticResource TextBlockBoldStyle}"/>
-                            <TreeViewItem Grid.Column="2" Padding="0"/>
-                            <TextBlock Grid.Column="4" Foreground="White" Text="Quantity" Style="{StaticResource TextBlockBoldStyle}"/>
-                            <TextBlock Grid.Column="5" Foreground="White" Text="Price" Style="{StaticResource TextBlockBoldStyle}"/>
-                            <TextBlock Grid.Column="6" Foreground="White" Text="Option" Style="{StaticResource TextBlockBoldStyle}"/>
+                            <TextBlock Grid.Column="1" Height="30" Foreground="White" Text="MenuName" FontSize="18" Style="{StaticResource TextBlockBoldStyle}"/>
+                            <TreeViewItem Grid.Column="2" Height="30"  Padding="0"/>
+                            <TextBlock Grid.Column="4" Height="30" Foreground="White" Text="No" FontSize="18" Style="{StaticResource TextBlockBoldStyle}"/>
+                            <TextBlock Grid.Column="5" Height="30" Foreground="White" Text="Price" FontSize="18" Style="{StaticResource TextBlockBoldStyle}"/>
+                            <TextBlock Grid.Column="6" Height="30" Foreground="White" Text="Option" FontSize="18" Style="{StaticResource TextBlockBoldStyle}"/>
                         </Grid>
                     </TreeViewItem.Header>
                 </TreeViewItem>
 
                 <!-- Data rows -->
-                <TreeView Grid.Row="1" ItemsSource="{Binding DrinkItems, Mode=TwoWay}" BorderBrush="Gray" BorderThickness="0 1 0 0">
+                <TreeView x:Name="treeView" Grid.Row="1" ItemsSource="{Binding DrinkItems, Mode=TwoWay}" BorderBrush="Gray" BorderThickness="0 1 0 0" ItemContainerStyle="{StaticResource ParentNode}" Background="#FFA5A5A5">
                     <TreeView.ItemTemplate>
-
                         <!-- Level 0 template leaves space for 2 child "Toggle" levels -->
-                        <HierarchicalDataTemplate ItemsSource="{Binding DrinkItems, Mode=TwoWay}">
+                        <HierarchicalDataTemplate ItemsSource="{Binding DrinkItems, Mode=TwoWay}" ItemContainerStyle="{StaticResource ChildNode}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition SharedSizeGroup="Num"/>
                                     <ColumnDefinition SharedSizeGroup="MenuName"/>
                                     <ColumnDefinition SharedSizeGroup="Toggle"/>
                                     <ColumnDefinition SharedSizeGroup="Toggle"/>
                                     <ColumnDefinition Width="30"/>
                                     <ColumnDefinition Width="70"/>
-                                    <ColumnDefinition Width="125"/>
+                                    <ColumnDefinition Width="175"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="{Binding Number, Mode=TwoWay}" Style="{StaticResource TextBlockStyle0}"/>
                                 <TextBlock Grid.Column="1" Text="{Binding MenuName, Mode=TwoWay}" Style="{StaticResource TextBlockStyle0}"/>
@@ -137,13 +149,13 @@
                                 <HierarchicalDataTemplate ItemsSource="{Binding DrinkItems, Mode=TwoWay}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="30"/>
+                                            <ColumnDefinition SharedSizeGroup="Num"/>
                                             <ColumnDefinition SharedSizeGroup="MenuName"/>
                                             <ColumnDefinition />
                                             <ColumnDefinition SharedSizeGroup="Toggle"/>
                                             <ColumnDefinition Width="30"/>
                                             <ColumnDefinition Width="70"/>
-                                            <ColumnDefinition Width="125"/>
+                                            <ColumnDefinition Width="175"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{Binding Number, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
                                         <TextBlock Grid.Column="1" Text="{Binding MenuName, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
@@ -157,13 +169,13 @@
                                         <HierarchicalDataTemplate ItemsSource="{Binding DrinkItems, Mode=TwoWay}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="30"/>
+                                                    <ColumnDefinition SharedSizeGroup="Num"/>
                                                     <ColumnDefinition SharedSizeGroup="MenuName"/>
                                                     <ColumnDefinition />
                                                     <ColumnDefinition />
                                                     <ColumnDefinition Width="30"/>
                                                     <ColumnDefinition Width="70"/>
-                                                    <ColumnDefinition Width="125"/>
+                                                    <ColumnDefinition Width="175"/>
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Grid.Column="0" Text="{Binding Number, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
                                                 <TextBlock Grid.Column="1" Text="{Binding MenuName, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
@@ -180,15 +192,15 @@
                 </TreeView>
             </Grid>
         </Border>
-        
+
         <Canvas 
             Grid.Column="1"
             Grid.Row="5"
             Background="#FF2B2A2A">
-            <DockPanel Height="140" LastChildFill="False" Width="200" Canvas.Left="190" Canvas.Top="45">
-                <TextBlock x:Name="textBlock" DockPanel.Dock="Top" Height="35" TextWrapping="Wrap" VerticalAlignment="Top" Width="175" FontWeight="Bold" FontSize="24" Foreground="#FFECE3E3" TextAlignment="Right" Text="0.00"/>
-                <TextBlock x:Name="textBlock2" DockPanel.Dock="Top" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Width="175" FontWeight="Bold" FontSize="24" Foreground="#FFECE3E3" TextAlignment="Right" Text="0.00"/>
-                <TextBlock x:Name="textBlock3" DockPanel.Dock="Bottom" Height="30" TextWrapping="Wrap" VerticalAlignment="Top" Width="175" FontWeight="Bold" FontSize="24" Foreground="#FFECE3E3" TextAlignment="Right" Text="0.00" Cursor=""/>
+            <DockPanel Height="140" LastChildFill="False" Width="300" Canvas.Left="190" Canvas.Top="45">
+                <TextBlock x:Name="textBlock" DockPanel.Dock="Top" Height="35" TextWrapping="Wrap" VerticalAlignment="Top" Width="250" FontWeight="Bold" FontSize="24" Foreground="#FFECE3E3" TextAlignment="Right" Text="{Binding PaidTotal, Mode=TwoWay}" />
+                <TextBlock x:Name="textBlock2" DockPanel.Dock="Top" Height="40" TextWrapping="Wrap" VerticalAlignment="Top" Width="250" FontWeight="Bold" FontSize="24" Foreground="#FFECE3E3" TextAlignment="Right" Text="{Binding Discount, Mode=TwoWay}"/>
+                <TextBlock x:Name="textBlock3" DockPanel.Dock="Bottom" Height="30" TextWrapping="Wrap" VerticalAlignment="Top" Width="250" FontWeight="Bold" FontSize="24" Foreground="#FFECE3E3" TextAlignment="Right" Text="{Binding Total, Mode=TwoWay}"/>
                 <TextBlock x:Name="textBlock4" DockPanel.Dock="Bottom" Height="35" TextWrapping="Wrap" VerticalAlignment="Top" Width="175" FontWeight="Bold" FontSize="24" Foreground="#FFECE3E3" TextAlignment="Right"/>
             </DockPanel>
             <DockPanel Height="140" LastChildFill="False" Width="171" Canvas.Left="14" Canvas.Top="45">
@@ -199,21 +211,10 @@
             </DockPanel>
             <Label x:Name="label" Content="Payment Status" Foreground="#FFB63838" FontWeight="Bold" FontSize="22" RenderTransformOrigin="0.489,0.526" Height="40" Canvas.Left="14" Width="186"/>
         </Canvas>
-        <Menu 
-            x:Name="menu" 
-            Grid.Row="3"
-            Grid.RowSpan="3"
-            Grid.Column="5"
-            Background="#FF343536">
-            <Button x:Name="button3" Content="Button" Width="120" Height="90" Foreground="#FF3E3C3C" Margin="5,5,5,10" FontWeight="Bold" FontSize="20"/>
-            <Button x:Name="button4" Content="Button" Width="120" Height="90" Foreground="#FF3E3C3C" Margin="5,0,5,10" FontWeight="Bold" FontSize="20"/>
-            <Button x:Name="button5" Content="Button" Width="120" Height="90" Foreground="#FF3E3C3C" Margin="5,0,5,10" FontWeight="Bold" FontSize="20"/>
-            <Button x:Name="button6" Content="Button" Width="120" Height="90" Foreground="#FF3E3C3C" Margin="5,0,5,10" FontWeight="Bold" FontSize="20"/>
-            <Button x:Name="button7" Content="Button" Width="120" Height="90" Foreground="#FF3E3C3C" Margin="5,0,5,10" FontWeight="Bold" FontSize="20"/>
-        </Menu>
+        
         <ScrollViewer 
             Grid.Row="3" 
-            Grid.RowSpan="3"
+            Grid.RowSpan="5"
             Grid.Column="3"
             Background="#FF2F3232" 
             VerticalScrollBarVisibility="Auto" >
@@ -237,7 +238,79 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
         </ScrollViewer>
-
+        <!--<Menu 
+            x:Name="menu" 
+            Grid.Row="3"
+            Grid.RowSpan="3"
+            Grid.Column="5"
+            Background="#FF343536">
+            <Button x:Name="button3" Content="Button" Width="120" Height="90" Foreground="#FF3E3C3C" Margin="5,5,5,10" FontWeight="Bold" FontSize="20"/>
+            <Button x:Name="button4" Content="Button" Width="120" Height="90" Foreground="#FF3E3C3C" Margin="5,0,5,10" FontWeight="Bold" FontSize="20"/>
+            <Button x:Name="button5" Content="Button" Width="120" Height="90" Foreground="#FF3E3C3C" Margin="5,0,5,10" FontWeight="Bold" FontSize="20"/>
+            <Button x:Name="button6" Content="Button" Width="120" Height="90" Foreground="#FF3E3C3C" Margin="5,0,5,10" FontWeight="Bold" FontSize="20"/>
+            <Button x:Name="button7" Content="Button" Width="120" Height="90" Foreground="#FF3E3C3C" Margin="5,0,5,10" FontWeight="Bold" FontSize="20"/>
+        </Menu>-->
+        
+        <ListBox
+            x:Name="mainListBoxItem"
+            Grid.Row="3"
+            Grid.Column="5" 
+            Grid.RowSpan="5"
+            SelectedIndex="0"
+            Background="#FF2F3232" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding MainSelectionChanged}" CommandParameter="{Binding ElementName=mainListBoxItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel IsItemsHost="True" Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <TextBlock Text="Coffee" Height="60" Width="140" Foreground="White" FontSize="20" TextAlignment="Center" Padding="0,15,0,0" />
+        </ListBox>
+        
+        <Button 
+            x:Name="btnDiscount" 
+            Content="할인" 
+            Command="{Binding DiscountCommand}"
+            Grid.Row="7"
+            Grid.Column="1"
+            Style="{StaticResource ButtonBackground}"
+            Width="120" 
+            Height="80" 
+            Foreground="White" 
+            Margin="0,0,380,0" 
+            FontWeight="Bold" 
+            FontSize="20" />
+        <Button 
+            x:Name="button3" 
+            Content="결제" 
+            Command="{Binding PayCommand}"
+            Grid.Row="7"
+            Grid.Column="1"
+            Style="{StaticResource ButtonBackground}"
+            Width="120" 
+            Height="80" 
+            Foreground="White" 
+            Margin="250,0,130,0" 
+            FontWeight="Bold" 
+            FontSize="20" />
+        <Button 
+            x:Name="button4" 
+            Content="취소" 
+            Command="{Binding DeleteCommand}"
+            CommandParameter="{Binding ElementName=treeView}"
+            Grid.Row="7"
+            Grid.Column="1"
+            Style="{StaticResource ButtonBackground}"
+            Width="120" 
+            Height="80" 
+            Foreground="White" 
+            Margin="380,0,0,0" 
+            FontWeight="Bold" 
+            FontSize="20"/>
     </Grid>
 
 </UserControl>

@@ -77,7 +77,6 @@
     <Compile Include="ViewModel\Class\Constants.cs" />
     <Compile Include="ViewModel\Class\RelayCommand.cs" />
     <Compile Include="ViewModel\CoffeeMakerViewModel.cs" />
-    <Compile Include="ViewModel\DecoViewModel.cs" />
     <Compile Include="View\CoffeeMakerClientView.xaml.cs">
       <DependentUpon>CoffeeMakerClientView.xaml</DependentUpon>
     </Compile>

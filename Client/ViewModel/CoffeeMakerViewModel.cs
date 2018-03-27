@@ -10,6 +10,7 @@ using CoffeeMaker_Client.TextBlockFactory;
 using System.Collections.Generic;
 using System.ComponentModel;
 using CoffeeMaker_Client.Binding;
+using System;
 
 namespace CoffeeMaker_Client.ViewModel
 {
@@ -21,12 +22,15 @@ namespace CoffeeMaker_Client.ViewModel
         private string _sendMsg;
         private ObservableCollection<DrinkList> _drinkItems;
         private ObservableCollection<Btn> _buttonList;
-
+        private double _paidTotal;
+        private int _discount;
+        private double _total;
+        private RelayCommand _payCommand;
+        private RelayCommand _DeleteCommand;
+        private RelayCommand _DiscountCommand;
         //DecoView
         private string _coffeeName = "";
         private string _sumPrice = "";
-        private int _temperatureSelectIdx;
-        private int _sizeSelectIdx;
         private Window window;
         private ObservableCollection<TB> _optionList;
         private RelayCommand _OKCommand;
@@ -44,6 +48,15 @@ namespace CoffeeMaker_Client.ViewModel
                 OnPropertyChanged(nameof(SendMsg));
             }
         }
+        public ObservableCollection<DrinkList> DrinkItems
+        {
+            get { return _drinkItems; }
+            set
+            {
+                _drinkItems = value;
+                OnPropertyChanged(nameof(DrinkItems));
+            }
+        }
         public ObservableCollection<Btn> ButtonList
         {
             get { return _buttonList; }
@@ -51,6 +64,33 @@ namespace CoffeeMaker_Client.ViewModel
             {
                 _buttonList = value;
                 OnPropertyChanged(nameof(ButtonList));
+            }
+        }
+        public double PaidTotal
+        {
+            get { return _paidTotal; }
+            set
+            {
+                _paidTotal = value;
+                OnPropertyChanged(nameof(PaidTotal));
+            }
+        }
+        public int Discount
+        {
+            get { return _discount; }
+            set
+            {
+                _discount = value;
+                OnPropertyChanged(nameof(Discount));
+            }
+        }
+        public double Total
+        {
+            get { return _total; }
+            set
+            {
+                _total = value;
+                OnPropertyChanged(nameof(Total));
             }
         }
         public string CoffeeName
@@ -71,24 +111,6 @@ namespace CoffeeMaker_Client.ViewModel
                 OnPropertyChanged(nameof(SumPrice));
             }
         }
-        public int TemperatureSelectIdx
-        {
-            get { return _temperatureSelectIdx; }
-            set
-            {
-                _temperatureSelectIdx = value;
-                OnPropertyChanged(nameof(TemperatureSelectIdx));
-            }
-        }
-        public int SizeSelectIdx
-        {
-            get { return _sizeSelectIdx; }
-            set
-            {
-                _sizeSelectIdx = value;
-                OnPropertyChanged(nameof(SizeSelectIdx));
-            }
-        }
         public ObservableCollection<TB> OptionList
         {
             get { return _optionList; }
@@ -98,15 +120,7 @@ namespace CoffeeMaker_Client.ViewModel
                 OnPropertyChanged(nameof(OptionList));
             }
         }
-        public ObservableCollection<DrinkList> DrinkItems
-        {
-            get { return _drinkItems; }
-            set
-            {
-                _drinkItems = value;
-                OnPropertyChanged(nameof(DrinkItems));
-            }
-        }
+        
         #endregion
 
         #region 생성자
@@ -114,18 +128,52 @@ namespace CoffeeMaker_Client.ViewModel
         {
             //tcp = new TcpService();
             //Database.Database database = new Database.Database();
+            _paidTotal = 0;
+            _discount = 0;
+            _total = 0;
             ButtonList = new ObservableCollection<Btn>();
-            _temperatureSelectIdx = 0;
-            _sizeSelectIdx = 0;
             OptionList = new ObservableCollection<TB>();
-            TestCode();
+            SetMenu();
             DrinkItems = new ObservableCollection<DrinkList>();
-            //TestItem();
         }
         #endregion
 
         #region Command
-        public ICommand SendMessageCommand => new RelayCommand(SendMessage);
+        //CoffeeMakerClientView
+        public ICommand PayCommand
+        {
+            get
+            {
+                if (_payCommand == null)
+                {
+                    _payCommand = new RelayCommand(PayExecute);
+                }
+                return _payCommand;
+            }
+        }
+        public ICommand DeleteCommand
+        {
+            get
+            {
+                if (_DeleteCommand == null)
+                {
+                    _DeleteCommand = new RelayCommand(DeleteExecute);
+                }
+                return _DeleteCommand;
+            }
+        }
+        public ICommand DiscountCommand
+        {
+            get
+            {
+                if (_DiscountCommand == null)
+                {
+                    _DiscountCommand = new RelayCommand(DiscountExecute);
+                }
+                return _DiscountCommand;
+            }
+        }
+        //DecoView
         public ICommand OKCommand
         {
             get
@@ -165,18 +213,44 @@ namespace CoffeeMaker_Client.ViewModel
         #endregion
 
         #region Command Method
-        public void SendMessage(object parameter)
+        public void PayExecute(object parameter)
         {
-            tcp.SendMessage(SendMsg);
+            //tcp.SendMessage(SendMsg);
+        }
+        public void DeleteExecute(object parameter)
+        {
+            if(MessageBox.Show("선택한 항목을 삭제하시겠습니까?", "CMS", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
+            {
+                if (parameter != null)
+                {
+                    var treeview = parameter as TreeView;
+                    DeleteTreeViewItem(treeview.SelectedItem as DrinkList);
+                    SetPaidTotal();
+                }
+            }
+        }
+        public void DiscountExecute(object parameter)
+        {
+            if (PaidTotal > Discount)
+            {
+                Discount += 500;
+                if (PaidTotal < Discount)
+                {
+                    Discount = (int)PaidTotal;
+                }
+            }
         }
         public void OKExecute(object parameter)
         {
             AddTreeViewItem(_drink);
+            SetPaidTotal();
             window.Close();
+            window = null;
         }
         public void CancelExecute(object parameter)
         {
             window.Close();
+            window = null;
         }
         public void TempSelectionExecute(object parameter)
         {
@@ -219,14 +293,28 @@ namespace CoffeeMaker_Client.ViewModel
         #endregion
 
         #region IEventHandler
+        private void OnClick(object sender, RoutedEventArgs e)
+        {
+            window = new Window
+            {
+                Title = "",
+                Content = new View.DecoView(this)
+            };
+            window.Height = 600;
+            window.Width = 500;
 
+            SubBtn item = sender as SubBtn;
+            AddOptionItems(item.Content.ToString(), item.Price);
+
+            window.ShowDialog();
+        }
         #endregion
 
         #region EventMethods
         #endregion
 
         #region Methods
-        private void TestCode()
+        private void SetMenu()
         {
             for (int i = 0; i < 10; i++)
             {
@@ -252,7 +340,7 @@ namespace CoffeeMaker_Client.ViewModel
                 }
             }
             
-            //
+            //New Item
             DrinkItems.Add
             (
                 new DrinkList
@@ -274,85 +362,30 @@ namespace CoffeeMaker_Client.ViewModel
                 }
             );
         }
-        private void TestItem()
+        private void DeleteTreeViewItem(DrinkList drinkList)
         {
-            //DrinkItems = new ObservableCollection<DrinkList>()
-            //{
-            //    new DrinkList
-            //    {
-            //        Number = "0",
-            //        MenuName = "Coding",
-            //        Quantity = 4,
-            //        Price = 10000,
-            //        Option = "It pays the bills",
-            //        DrinkItems = new List<DrinkList>()
-            //        {
-            //            new DrinkList { MenuName = "Write", Quantity = 2, Option = "C# or go home" },
-            //            new DrinkList { MenuName = "Compile", Quantity = 1, Option = "WTB: SSD" },
-            //            new DrinkList { MenuName = "Test", Quantity = 1, Option = "Works on my machine" },
-            //        },
-            //    },
-            //    new DrinkList
-            //    {
-            //        MenuName = "Meetings",
-            //        Quantity = 3,
-            //        Option = "A necessary evil",
-            //        DrinkItems = new List<DrinkList>()
-            //        {
-            //            new DrinkList { MenuName = "Boring", Quantity = 1, Option = "Zzzzzz" },
-            //            new DrinkList { MenuName = "Gossipy", Quantity = 1, Option = "Oh no he didn't!" },
-            //            new DrinkList { MenuName = "Useful", Quantity = 1, Option = "Right away, boss" },
-            //        },
-            //    },
-            //    new DrinkList
-            //    {
-            //        MenuName = "Communicate",
-            //        Quantity = 3,
-            //        Option = "No man is an island",
-            //        DrinkItems = new List<DrinkList>()
-            //        {
-            //            new DrinkList { MenuName = "Email", Quantity = 1, Option = "So much junk mail" },
-            //            new DrinkList { MenuName = "Blogs", Quantity = 1, Option = "blogs.msdn.com/delay" },
-            //            new DrinkList { MenuName = "Twitter", Quantity = 1, Option = "RT: Nothing to report" },
-            //        },
-            //    },
-            //    new DrinkList
-            //    {
-            //        MenuName = "Eating",
-            //        Quantity = 2,
-            //        Option = "Fuel for the body",
-            //        DrinkItems = new List<DrinkList>()
-            //        {
-            //            new DrinkList { MenuName = "Lunch", Quantity = 1, Option = "Bag lunch from home" },
-            //            new DrinkList
-            //            {
-            //                MenuName = "Snack",
-            //                Quantity = 2,
-            //                Option = "Still hungry",
-            //                DrinkItems = new List<DrinkList>()
-            //                {
-            //                    new DrinkList { MenuName = "Fruit", Quantity = 1, Option = "Good for you" },
-            //                    new DrinkList { MenuName = "Candy", Quantity = 1, Option = "Yummy!" },
-            //                },
-            //            },
-            //        },
-            //    },
-            //};
-        }
-        private void OnClick(object sender, RoutedEventArgs e)
-        {
-            SubBtn item = sender as SubBtn;
-            //Drink.Add(new Model.Drink() { Name = item.Name, Price = item.Price, OrderNo = Drink.Count.ToString() } );
-
-            window = new Window
+            if (drinkList.Number != null)
             {
-                Title = "",
-                Content = new View.DecoView(this)
-            };
-            window.Height = 600;
-            window.Width = 500;
-            AddOptionItems(item.Content.ToString(), item.Price);
-            window.ShowDialog();
+                DrinkItems.Remove(drinkList);
+                return;
+            }
+            else
+            {
+                for (int i = 0; i < DrinkItems.Count; i++)
+                {
+                    if(DrinkItems[i].MenuName == drinkList.MenuName)
+                    {
+                        DrinkItems[i].DrinkItems.Remove(drinkList);
+                        DrinkItems[i].Quantity -= 1;
+                        DrinkItems[i].Price -= drinkList.Price;
+                        if(DrinkItems[i].Quantity == 0)
+                        {
+                            DrinkItems.RemoveAt(i);
+                        }
+                        return;
+                    }
+                }
+            }
         }
         private void AddOptionItems(string name, int price)
         {
@@ -378,6 +411,20 @@ namespace CoffeeMaker_Client.ViewModel
         private void SetSumPrice(int cost)
         {
             SumPrice = $"Price : {cost}";
+        }
+        private void SetPaidTotal()
+        {
+            PaidTotal = 0;
+            foreach (DrinkList item in DrinkItems)
+            {
+                PaidTotal += item.Price;
+            }
+            Total = PaidTotal - Discount;
+            Total = Math.Round(Total / 10) * 10f;
+            if (Total < 0)
+            {
+                Total = 0;
+            }
         }
         #endregion
 
