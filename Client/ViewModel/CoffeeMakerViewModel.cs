@@ -9,16 +9,17 @@ using CoffeeMaker_Client.ButtonFactory;
 using CoffeeMaker_Client.TextBlockFactory;
 using System.Collections.Generic;
 using System.ComponentModel;
+using CoffeeMaker_Client.Binding;
 
 namespace CoffeeMaker_Client.ViewModel
 {
-    public class CoffeeMakerViewModel : INotifyPropertyChanged
+    public class CoffeeMakerViewModel : BaseViewModel
 
     {
         #region Private Members
         private TcpService tcp = null;
         private string _sendMsg;
-        private List<DrinkList> _drinkItems;
+        private ObservableCollection<DrinkList> _drinkItems;
         private ObservableCollection<Btn> _buttonList;
 
         //DecoView
@@ -40,8 +41,7 @@ namespace CoffeeMaker_Client.ViewModel
             set
             {
                 _sendMsg = value;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("SendMsg"));
+                OnPropertyChanged(nameof(SendMsg));
             }
         }
         public ObservableCollection<Btn> ButtonList
@@ -50,8 +50,7 @@ namespace CoffeeMaker_Client.ViewModel
             set
             {
                 _buttonList = value;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("ButtonList"));
+                OnPropertyChanged(nameof(ButtonList));
             }
         }
         public string CoffeeName
@@ -60,8 +59,7 @@ namespace CoffeeMaker_Client.ViewModel
             set
             {
                 _coffeeName = value;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("CoffeeName"));
+                OnPropertyChanged(nameof(CoffeeName));
             }
         }
         public string SumPrice
@@ -70,8 +68,7 @@ namespace CoffeeMaker_Client.ViewModel
             set
             {
                 _sumPrice = value;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("SumPrice"));
+                OnPropertyChanged(nameof(SumPrice));
             }
         }
         public int TemperatureSelectIdx
@@ -80,8 +77,7 @@ namespace CoffeeMaker_Client.ViewModel
             set
             {
                 _temperatureSelectIdx = value;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("TemperatureSelectIdx"));
+                OnPropertyChanged(nameof(TemperatureSelectIdx));
             }
         }
         public int SizeSelectIdx
@@ -90,8 +86,7 @@ namespace CoffeeMaker_Client.ViewModel
             set
             {
                 _sizeSelectIdx = value;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("SizeSelectIdx"));
+                OnPropertyChanged(nameof(SizeSelectIdx));
             }
         }
         public ObservableCollection<TB> OptionList
@@ -100,18 +95,16 @@ namespace CoffeeMaker_Client.ViewModel
             set
             {
                 _optionList = value;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("OptionList"));
+                OnPropertyChanged(nameof(OptionList));
             }
         }
-        public List<DrinkList> DrinkItems
+        public ObservableCollection<DrinkList> DrinkItems
         {
             get { return _drinkItems; }
             set
             {
                 _drinkItems = value;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("DrinkItems"));
+                OnPropertyChanged(nameof(DrinkItems));
             }
         }
         #endregion
@@ -126,7 +119,7 @@ namespace CoffeeMaker_Client.ViewModel
             _sizeSelectIdx = 0;
             OptionList = new ObservableCollection<TB>();
             TestCode();
-            DrinkItems = new List<DrinkList>();
+            DrinkItems = new ObservableCollection<DrinkList>();
             //TestItem();
         }
         #endregion
@@ -226,7 +219,7 @@ namespace CoffeeMaker_Client.ViewModel
         #endregion
 
         #region IEventHandler
-        public event PropertyChangedEventHandler PropertyChanged;
+
         #endregion
 
         #region EventMethods
@@ -248,15 +241,17 @@ namespace CoffeeMaker_Client.ViewModel
         }
         private void AddTreeViewItem(Drink drink)
         {
-            foreach (DrinkList item in DrinkItems)
+            for (int i = 0; i < DrinkItems.Count; i++)
             {
-                if(item.MenuName == drink.Name)
+                if (DrinkItems[i].MenuName == drink.Name)
                 {
-                    item.DrinkItems.Add(new DrinkList { MenuName = drink.Name, Quantity = 1, Price = drink.Price, Option = drink.Option });
-                    item.Quantity = item.DrinkItems.Count;
+                    DrinkItems[i].DrinkItems.Add(new DrinkList { MenuName = drink.Name, Quantity = 1, Price = drink.Price, Option = drink.Option });
+                    DrinkItems[i].Quantity = DrinkItems[i].DrinkItems.Count;
+                    DrinkItems[i].Price += drink.Price;
                     return;
-                } 
+                }
             }
+            
             //
             DrinkItems.Add
             (
@@ -265,7 +260,8 @@ namespace CoffeeMaker_Client.ViewModel
                     Number = DrinkItems.Count.ToString(),
                     MenuName = drink.Name,
                     Quantity = 1,
-                    DrinkItems = new List<DrinkList>()
+                    Price = drink.Price,
+                    DrinkItems = new ObservableCollection<DrinkList>()
                     {
                         new DrinkList
                         {
@@ -280,68 +276,68 @@ namespace CoffeeMaker_Client.ViewModel
         }
         private void TestItem()
         {
-            DrinkItems = new List<DrinkList>()
-            {
-                new DrinkList
-                {
-                    Number = "0",
-                    MenuName = "Coding",
-                    Quantity = 4,
-                    Price = 10000,
-                    Option = "It pays the bills",
-                    DrinkItems = new List<DrinkList>()
-                    {
-                        new DrinkList { MenuName = "Write", Quantity = 2, Option = "C# or go home" },
-                        new DrinkList { MenuName = "Compile", Quantity = 1, Option = "WTB: SSD" },
-                        new DrinkList { MenuName = "Test", Quantity = 1, Option = "Works on my machine" },
-                    },
-                },
-                new DrinkList
-                {
-                    MenuName = "Meetings",
-                    Quantity = 3,
-                    Option = "A necessary evil",
-                    DrinkItems = new List<DrinkList>()
-                    {
-                        new DrinkList { MenuName = "Boring", Quantity = 1, Option = "Zzzzzz" },
-                        new DrinkList { MenuName = "Gossipy", Quantity = 1, Option = "Oh no he didn't!" },
-                        new DrinkList { MenuName = "Useful", Quantity = 1, Option = "Right away, boss" },
-                    },
-                },
-                new DrinkList
-                {
-                    MenuName = "Communicate",
-                    Quantity = 3,
-                    Option = "No man is an island",
-                    DrinkItems = new List<DrinkList>()
-                    {
-                        new DrinkList { MenuName = "Email", Quantity = 1, Option = "So much junk mail" },
-                        new DrinkList { MenuName = "Blogs", Quantity = 1, Option = "blogs.msdn.com/delay" },
-                        new DrinkList { MenuName = "Twitter", Quantity = 1, Option = "RT: Nothing to report" },
-                    },
-                },
-                new DrinkList
-                {
-                    MenuName = "Eating",
-                    Quantity = 2,
-                    Option = "Fuel for the body",
-                    DrinkItems = new List<DrinkList>()
-                    {
-                        new DrinkList { MenuName = "Lunch", Quantity = 1, Option = "Bag lunch from home" },
-                        new DrinkList
-                        {
-                            MenuName = "Snack",
-                            Quantity = 2,
-                            Option = "Still hungry",
-                            DrinkItems = new List<DrinkList>()
-                            {
-                                new DrinkList { MenuName = "Fruit", Quantity = 1, Option = "Good for you" },
-                                new DrinkList { MenuName = "Candy", Quantity = 1, Option = "Yummy!" },
-                            },
-                        },
-                    },
-                },
-            };
+            //DrinkItems = new ObservableCollection<DrinkList>()
+            //{
+            //    new DrinkList
+            //    {
+            //        Number = "0",
+            //        MenuName = "Coding",
+            //        Quantity = 4,
+            //        Price = 10000,
+            //        Option = "It pays the bills",
+            //        DrinkItems = new List<DrinkList>()
+            //        {
+            //            new DrinkList { MenuName = "Write", Quantity = 2, Option = "C# or go home" },
+            //            new DrinkList { MenuName = "Compile", Quantity = 1, Option = "WTB: SSD" },
+            //            new DrinkList { MenuName = "Test", Quantity = 1, Option = "Works on my machine" },
+            //        },
+            //    },
+            //    new DrinkList
+            //    {
+            //        MenuName = "Meetings",
+            //        Quantity = 3,
+            //        Option = "A necessary evil",
+            //        DrinkItems = new List<DrinkList>()
+            //        {
+            //            new DrinkList { MenuName = "Boring", Quantity = 1, Option = "Zzzzzz" },
+            //            new DrinkList { MenuName = "Gossipy", Quantity = 1, Option = "Oh no he didn't!" },
+            //            new DrinkList { MenuName = "Useful", Quantity = 1, Option = "Right away, boss" },
+            //        },
+            //    },
+            //    new DrinkList
+            //    {
+            //        MenuName = "Communicate",
+            //        Quantity = 3,
+            //        Option = "No man is an island",
+            //        DrinkItems = new List<DrinkList>()
+            //        {
+            //            new DrinkList { MenuName = "Email", Quantity = 1, Option = "So much junk mail" },
+            //            new DrinkList { MenuName = "Blogs", Quantity = 1, Option = "blogs.msdn.com/delay" },
+            //            new DrinkList { MenuName = "Twitter", Quantity = 1, Option = "RT: Nothing to report" },
+            //        },
+            //    },
+            //    new DrinkList
+            //    {
+            //        MenuName = "Eating",
+            //        Quantity = 2,
+            //        Option = "Fuel for the body",
+            //        DrinkItems = new List<DrinkList>()
+            //        {
+            //            new DrinkList { MenuName = "Lunch", Quantity = 1, Option = "Bag lunch from home" },
+            //            new DrinkList
+            //            {
+            //                MenuName = "Snack",
+            //                Quantity = 2,
+            //                Option = "Still hungry",
+            //                DrinkItems = new List<DrinkList>()
+            //                {
+            //                    new DrinkList { MenuName = "Fruit", Quantity = 1, Option = "Good for you" },
+            //                    new DrinkList { MenuName = "Candy", Quantity = 1, Option = "Yummy!" },
+            //                },
+            //            },
+            //        },
+            //    },
+            //};
         }
         private void OnClick(object sender, RoutedEventArgs e)
         {

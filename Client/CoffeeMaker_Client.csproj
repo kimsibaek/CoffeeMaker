@@ -62,6 +62,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Binding\BaseINotifyPropertyChanged.cs" />
+    <Compile Include="Binding\BaseViewModel.cs" />
     <Compile Include="ButtonFactory\Btn.cs" />
     <Compile Include="ButtonFactory\ButtonStore.cs" />
     <Compile Include="ButtonFactory\MainBtn.cs" />
