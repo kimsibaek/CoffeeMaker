@@ -7,18 +7,19 @@ using System.Windows.Media;
 
 namespace CoffeeMaker_Client.TextBlockFactory
 {
-    public class MainTB : TB
+    public class DecoTB : TB
     {
-        public MainTB(string menu)
+        public DecoTB(string menu, int price)
         {
-            Height = 60;
-            Width = 140;
+            Height = 40;
+            Width = 80;
             Foreground = new SolidColorBrush() { Color = Colors.White };
             FontSize = 20;
             TextAlignment = System.Windows.TextAlignment.Center;
 
             Text = menu;
             Menu = menu;
+            Price = price;
         }
     }
 }

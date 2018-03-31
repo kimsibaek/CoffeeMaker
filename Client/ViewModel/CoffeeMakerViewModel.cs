@@ -22,6 +22,7 @@ namespace CoffeeMaker_Client.ViewModel
         private string _sendMsg;
         private ObservableCollection<DrinkList> _drinkItems;
         private ObservableCollection<Btn> _buttonList;
+        private ObservableCollection<TB> _mainMenuList;
         private double _paidTotal;
         private int _discount;
         private double _total;
@@ -64,6 +65,15 @@ namespace CoffeeMaker_Client.ViewModel
             {
                 _buttonList = value;
                 OnPropertyChanged(nameof(ButtonList));
+            }
+        }
+        public ObservableCollection<TB> MainMenuList
+        {
+            get { return _mainMenuList; }
+            set
+            {
+                _mainMenuList = value;
+                OnPropertyChanged(nameof(MainMenuList));
             }
         }
         public double PaidTotal
@@ -133,6 +143,7 @@ namespace CoffeeMaker_Client.ViewModel
             _total = 0;
             ButtonList = new ObservableCollection<Btn>();
             OptionList = new ObservableCollection<TB>();
+            MainMenuList = new ObservableCollection<TB>();
             SetMenu();
             DrinkItems = new ObservableCollection<DrinkList>();
         }
@@ -219,11 +230,15 @@ namespace CoffeeMaker_Client.ViewModel
         }
         public void DeleteExecute(object parameter)
         {
+            TreeView treeview = parameter as TreeView;
+            if (treeview.SelectedItem == null)
+            {
+                return;
+            }
             if(MessageBox.Show("선택한 항목을 삭제하시겠습니까?", "CMS", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
             {
                 if (parameter != null)
                 {
-                    var treeview = parameter as TreeView;
                     DeleteTreeViewItem(treeview.SelectedItem as DrinkList);
                     SetPaidTotal();
                 }
@@ -257,12 +272,12 @@ namespace CoffeeMaker_Client.ViewModel
             var test = parameter as ListBox;
             if (test.SelectedIndex == 0)
             {
-                _drink.AddDeco(new Deco() { Name = "HOT", Price = 0 });
+                _drink.AddDeco(new TB() { Name = "HOT", Price = 0 });
                 _drink.DeleteDeco("ICE");
             }
             else
             {
-                _drink.AddDeco(new Deco() { Name = "ICE", Price = 500 });
+                _drink.AddDeco(new TB() { Name = "ICE", Price = 500 });
                 _drink.DeleteDeco("HOT");
             }
             SetSumPrice( _drink.Price);
@@ -272,19 +287,19 @@ namespace CoffeeMaker_Client.ViewModel
             var test = parameter as ListBox;
             if (test.SelectedIndex == 0)
             {
-                _drink.AddDeco(new Deco() { Name = "TALL", Price = 0 });
+                _drink.AddDeco(new TB() { Name = "TALL", Price = 0 });
                 _drink.DeleteDeco("GRANDE");
                 _drink.DeleteDeco("VENTI");
             }
             else if(test.SelectedIndex == 1)
             {
-                _drink.AddDeco(new Deco() { Name = "GRANDE", Price = 1000 });
+                _drink.AddDeco(new TB() { Name = "GRANDE", Price = 1000 });
                 _drink.DeleteDeco("TALL");
                 _drink.DeleteDeco("VENTI");
             }
             else
             {
-                _drink.AddDeco(new Deco() { Name = "VENTI", Price = 1500 });
+                _drink.AddDeco(new TB() { Name = "VENTI", Price = 1500 });
                 _drink.DeleteDeco("TALL");
                 _drink.DeleteDeco("GRANDE");
             }
@@ -316,13 +331,20 @@ namespace CoffeeMaker_Client.ViewModel
         #region Methods
         private void SetMenu()
         {
+            //Main Menu
+            TextBlockStore tStore = new TextBlockStore();
+            for (int i = 0; i < 3; i++)
+            {
+                TB tb;
+                tStore.CreateTB(out tb, TBType.Main, "Coffee");
+                MainMenuList.Add(tb);
+            }
+            //Menu
+            ButtonStore bStore = new ButtonStore();
             for (int i = 0; i < 10; i++)
             {
                 Btn _menuBtn;
-                ButtonStore store = new ButtonStore();
-                _menuBtn = store.CreateBtn(BtnType.Sub, "아메리카노", 1500);
-                _menuBtn.Height = 100;
-                _menuBtn.Width = 200;
+                bStore.CreateBtn(out _menuBtn, BtnType.Sub, "아메리카노", 1500);
                 _menuBtn.Click += OnClick;
                 ButtonList.Add(_menuBtn);
             }
@@ -395,15 +417,15 @@ namespace CoffeeMaker_Client.ViewModel
             {
                 TB tb;
                 TextBlockStore tbStore = new TextBlockStore();
-                tb = tbStore.CreateTB("Deco", 500); 
+                tbStore.CreateTB(out tb, TBType.Deco, "Deco", 500); 
                 OptionList.Add(tb);
             }
         }
         private void CreateDrink(string name, int price)
         {
             _drink = new Drink(name, price);
-            _drink.AddDeco(new Deco() { Name = "HOT", Price = 0 });
-            _drink.AddDeco(new Deco() { Name = "TALL", Price = 0 });
+            _drink.AddDeco(new TB() { Name = "HOT", Price = 0 });
+            _drink.AddDeco(new TB() { Name = "TALL", Price = 0 });
 
             CoffeeName = $"Menu : {_drink.Name}";
             SetSumPrice(_drink.Cost);

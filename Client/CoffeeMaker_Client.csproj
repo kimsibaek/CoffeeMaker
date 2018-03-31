@@ -68,9 +68,9 @@
     <Compile Include="ButtonFactory\ButtonStore.cs" />
     <Compile Include="ButtonFactory\MainBtn.cs" />
     <Compile Include="ButtonFactory\SubBtn.cs" />
-    <Compile Include="Model\Deco.cs" />
     <Compile Include="Model\DrinkList.cs" />
     <Compile Include="TCP\TcpService.cs" />
+    <Compile Include="TextBlockFactory\DecoTB.cs" />
     <Compile Include="TextBlockFactory\MainTB.cs" />
     <Compile Include="TextBlockFactory\TB.cs" />
     <Compile Include="TextBlockFactory\TextBlockStore.cs" />

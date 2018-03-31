@@ -13,6 +13,9 @@ namespace CoffeeMaker_Client.ButtonFactory
         {
             Content = name;
             Price = price;
+
+            Height = 100;
+            Width = 200;
         }
     }
 }

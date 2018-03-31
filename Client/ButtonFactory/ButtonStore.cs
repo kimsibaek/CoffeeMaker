@@ -13,12 +13,11 @@ namespace CoffeeMaker_Client.ButtonFactory
     }
     public class ButtonStore
     {
-        public Btn CreateBtn(BtnType type, string name, int price = 0)
+        public void CreateBtn(out Btn btn, BtnType type, string name, int price = 0)
         {
-            Btn btn = null;
             if (type == BtnType.Main) btn = new MainBtn(name);
-            else if(type == BtnType.Sub) btn = new SubBtn(name, price);
-            return btn;
+            else if (type == BtnType.Sub) btn = new SubBtn(name, price);
+            else btn = new Btn();
         }
     }
 }

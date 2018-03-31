@@ -51,6 +51,7 @@ namespace CoffeeMaker_Client.Model
             _optionList = new List<TB>();
         }
         #endregion
+
         #region EventHandler
         #endregion
 
