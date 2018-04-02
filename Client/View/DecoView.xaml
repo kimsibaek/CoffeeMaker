@@ -4,6 +4,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"  
+    xmlns:l="clr-namespace:CoffeeMaker_Client.UIHelper"
     xmlns:local="clr-namespace:CoffeeMaker_Client.View"
     xmlns:local2="clr-namespace:CoffeeMaker_Client.ViewModel"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" x:Class="CoffeeMaker_Client.View.DecoView"
@@ -165,7 +166,7 @@
         </ListBox>
 
         <ListBox 
-            x:Name="Listboxitem"
+            x:Name="dListboxItem"
             ItemsSource="{Binding OptionList}"
             Grid.Row="15" 
             Grid.RowSpan="5"
@@ -173,7 +174,13 @@
             Grid.ColumnSpan="3"
             Background="#FF2F3232" 
             ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-            SelectionMode="Multiple">
+            SelectionMode="Multiple"
+            l:ListBoxHelper.SelectedItems="{Binding OptionSelectedItems, Mode=TwoWay}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding DecoSelectionChanged}" CommandParameter="{Binding ElementName=dListboxItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel>

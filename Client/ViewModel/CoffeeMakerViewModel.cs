@@ -11,6 +11,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using CoffeeMaker_Client.Binding;
 using System;
+using CoffeeMaker_Client.Query;
+using System.Data;
+using CoffeeMaker.Common;
+using CoffeeMaker.Common.JsonFile;
 
 namespace CoffeeMaker_Client.ViewModel
 {
@@ -18,6 +22,7 @@ namespace CoffeeMaker_Client.ViewModel
 
     {
         #region Private Members
+        private Database.Database database;
         private TcpService tcp = null;
         private string _sendMsg;
         private ObservableCollection<DrinkList> _drinkItems;
@@ -36,6 +41,7 @@ namespace CoffeeMaker_Client.ViewModel
         private RelayCommand _OKCommand;
         private RelayCommand _CancelCommand;
         private Drink _drink;
+        private ObservableCollection<TB> _optionSelectedItems;
         #endregion
 
         #region Properties
@@ -120,19 +126,33 @@ namespace CoffeeMaker_Client.ViewModel
                 OnPropertyChanged(nameof(OptionList));
             }
         }
-        
+        public ObservableCollection<TB> OptionSelectedItems
+        {
+            get { return _optionSelectedItems; }
+            set
+            {
+                _optionSelectedItems = value;
+                OnPropertyChanged(nameof(OptionSelectedItems));
+                SetPrice();
+                if (_drink != null)
+                {
+                    SetSumPrice(_drink.Price);
+                }
+            }
+        }
         #endregion
 
         #region 생성자
         public CoffeeMakerViewModel()
         {
-            //tcp = new TcpService();
-            //Database.Database database = new Database.Database();
+            tcp = new TcpService();
+            database = new Database.Database();
             _paidTotal = 0;
             _discount = 0;
             _total = 0;
             ButtonList = new ObservableCollection<Btn>();
             OptionList = new ObservableCollection<TB>();
+            OptionSelectedItems = new ObservableCollection<TB>();
             SetMenu();
             DrinkItems = new ObservableCollection<DrinkList>();
         }
@@ -215,7 +235,25 @@ namespace CoffeeMaker_Client.ViewModel
         #region Command Method
         public void PayExecute(object parameter)
         {
-            //tcp.SendMessage(SendMsg);
+            //JsonOrderHistory data = new JsonOrderHistory();
+            //data.AccountInfo.AccountNo = "100011";
+            //data.AccountInfo.Receive = "2500"; // PaidTotal.ToString();
+            //data.AccountInfo.Discount = "0"; // Discount.ToString();
+            //data.AccountInfo.Total = "2500"; // Total.ToString();
+            //data.AccountInfo.UserNo = "0";
+            //OrderHistoryItem item = new OrderHistoryItem();
+            //item.DecoList = new List<string>();
+            //item.AccountNo = "100011";
+            //item.OrderNo = "10006";
+            //item.DrinkNo = "1001";
+            //item.Price = "2500";
+            //item.DecoList.Add("HOT");
+            //item.DecoList.Add("103");
+            //item.DecoList.Add("106");
+            //data.OrderHistoryList.Add(item);
+            //SendMsg = JsonExtention.Serialize(data);
+            //string result = tcp.SendMessage(SendMsg);
+
         }
         public void DeleteExecute(object parameter)
         {
@@ -316,16 +354,30 @@ namespace CoffeeMaker_Client.ViewModel
         #region Methods
         private void SetMenu()
         {
-            for (int i = 0; i < 10; i++)
+            DBQuery query = new DBQuery();
+            DataTable table  = database.ExecuteQuery(query.SelectDrink());
+
+            foreach (DataRow item in table.Rows)
             {
                 Btn _menuBtn;
                 ButtonStore store = new ButtonStore();
-                _menuBtn = store.CreateBtn(BtnType.Sub, "아메리카노", 1500);
+                _menuBtn = store.CreateBtn(BtnType.Sub, item["NAME"].ToString(), int.Parse(item["PRICE"].ToString()));
                 _menuBtn.Height = 100;
                 _menuBtn.Width = 200;
                 _menuBtn.Click += OnClick;
                 ButtonList.Add(_menuBtn);
             }
+
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    Btn _menuBtn;
+            //    ButtonStore store = new ButtonStore();
+            //    _menuBtn = store.CreateBtn(BtnType.Sub, "아메리카노", 1500);
+            //    _menuBtn.Height = 100;
+            //    _menuBtn.Width = 200;
+            //    _menuBtn.Click += OnClick;
+            //    ButtonList.Add(_menuBtn);
+            //}
         }
         private void AddTreeViewItem(Drink drink)
         {
@@ -389,15 +441,26 @@ namespace CoffeeMaker_Client.ViewModel
         }
         private void AddOptionItems(string name, int price)
         {
+            OptionList.Clear();
             CreateDrink(name, price);
-            
-            for (int i = 0; i < 10; i++)
+            DBQuery query = new DBQuery();
+            DataTable table = database.ExecuteQuery(query.SelectDeco());
+
+            foreach (DataRow item in table.Rows)
             {
                 TB tb;
                 TextBlockStore tbStore = new TextBlockStore();
-                tb = tbStore.CreateTB("Deco", 500); 
+                tb = tbStore.CreateTB(item["NAME"].ToString(), int.Parse(item["PRICE"].ToString()));
                 OptionList.Add(tb);
             }
+
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    TB tb;
+            //    TextBlockStore tbStore = new TextBlockStore();
+            //    tb = tbStore.CreateTB("Deco", 500); 
+            //    OptionList.Add(tb);
+            //}
         }
         private void CreateDrink(string name, int price)
         {
@@ -425,6 +488,21 @@ namespace CoffeeMaker_Client.ViewModel
             {
                 Total = 0;
             }
+        }
+        private void SetPrice()
+        {
+            try
+            {
+                _drink.Price = _drink.Cost;
+                foreach (TB item in _drink.OptionList)
+                {
+                    _drink.Price += item.Price;
+                }
+            }
+            catch (Exception)
+            {
+            }
+           
         }
         #endregion
 

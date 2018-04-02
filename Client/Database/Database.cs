@@ -91,10 +91,10 @@ namespace CoffeeMaker_Client.Database
         }
 
         //조회 메서드 (SELECT 값 반환)ExecuteQuery
-        public DataTable ExecuteQuery(OracleConnection conn, string _query)
+        public DataTable ExecuteQuery(string _query)
         {
             OracleCommand command = new OracleCommand();
-            command.Connection = conn;
+            command.Connection = _connection;
             command.CommandText = _query;
 
             DataTable data = new DataTable();
@@ -107,14 +107,14 @@ namespace CoffeeMaker_Client.Database
         }
 
         //반환값 없는 쿼리 실행 메서드(INSERT, UPDATE, DELETE 등)
-        public void ExecuteNonQuery(OracleConnection conn, string _query)
+        public void ExecuteNonQuery(string _query)
         {
             OracleCommand command = new OracleCommand(_query);
-            command.Connection = conn;
+            command.Connection = _connection;
             try
             {
                 command.ExecuteNonQuery();
-                command.Transaction = DbTransaction(conn);
+                command.Transaction = DbTransaction();
                 command.Transaction.Commit();
 
             }
@@ -127,10 +127,10 @@ namespace CoffeeMaker_Client.Database
         }
 
         //트렌잭션 관리 메서드 (커밋, 롤백 등)
-        public OracleTransaction DbTransaction(OracleConnection conn)
+        public OracleTransaction DbTransaction()
         {
             OracleTransaction transaction = null;
-            transaction = conn.BeginTransaction();
+            transaction = _connection.BeginTransaction();
 
             return transaction;
         }

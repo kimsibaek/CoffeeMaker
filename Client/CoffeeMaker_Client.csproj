@@ -70,10 +70,14 @@
     <Compile Include="ButtonFactory\SubBtn.cs" />
     <Compile Include="Model\Deco.cs" />
     <Compile Include="Model\DrinkList.cs" />
+    <Compile Include="Query\DBQuery.cs" />
     <Compile Include="TCP\TcpService.cs" />
     <Compile Include="TextBlockFactory\MainTB.cs" />
     <Compile Include="TextBlockFactory\TB.cs" />
     <Compile Include="TextBlockFactory\TextBlockStore.cs" />
+    <Compile Include="UIHelper\ListBoxHelper.cs" />
+    <Compile Include="UIHelper\NotifyCollectionChangedHelper.cs" />
+    <Compile Include="UIHelper\SelectedItemsHelper.cs" />
     <Compile Include="ViewModel\Class\Constants.cs" />
     <Compile Include="ViewModel\Class\RelayCommand.cs" />
     <Compile Include="ViewModel\CoffeeMakerViewModel.cs" />
@@ -124,6 +128,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CoffeeMaker\CoffeeMaker.csproj">
+      <Project>{82AE3F17-AFE3-48B2-8691-A2536D7B74B8}</Project>
+      <Name>CoffeeMaker</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

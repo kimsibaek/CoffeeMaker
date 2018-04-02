@@ -45,7 +45,6 @@ namespace CoffeeMaker_Client.TCP
             byte[] rbuffer = new byte[1024];
             stream.Read(rbuffer, 0, rbuffer.Length);
             string msg = Encoding.Unicode.GetString(rbuffer);
-            msg = "Data from Server : " + msg;
             return msg;
         }
 
