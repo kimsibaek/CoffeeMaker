@@ -8,7 +8,7 @@ using System.Windows.Controls.Primitives;
 
 namespace CoffeeMaker_Client.ButtonFactory
 {
-    public abstract class Btn : Button
+    public class Btn : Button
     {
         
     }

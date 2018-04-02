@@ -9,17 +9,16 @@ namespace CoffeeMaker_Client.TextBlockFactory
 {
     public class MainTB : TB
     {
-        public MainTB(string menu, int price)
+        public MainTB(string menu)
         {
-            Height = 40;
-            Width = 80;
+            Height = 60;
+            Width = 140;
             Foreground = new SolidColorBrush() { Color = Colors.White };
             FontSize = 20;
             TextAlignment = System.Windows.TextAlignment.Center;
 
             Text = menu;
             Menu = menu;
-            Price = price;
         }
     }
 }

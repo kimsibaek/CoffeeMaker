@@ -7,14 +7,9 @@ using System.Windows.Controls;
 
 namespace CoffeeMaker_Client.TextBlockFactory
 {
-    public abstract class TB : TextBlock
+    public class TB : TextBlock
     {
         public string Menu { get; set; }
         public int Price { get; set; }
-        public TB()
-        {
-
-        }
-        
     }
 }

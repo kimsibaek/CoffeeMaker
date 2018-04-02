@@ -253,6 +253,7 @@
         
         <ListBox
             x:Name="mainListBoxItem"
+            ItemsSource="{Binding MainMenuList}"
             Grid.Row="3"
             Grid.Column="5" 
             Grid.RowSpan="5"
@@ -268,7 +269,6 @@
                     <VirtualizingStackPanel IsItemsHost="True" Orientation="Vertical" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
-            <TextBlock Text="Coffee" Height="60" Width="140" Foreground="White" FontSize="20" TextAlignment="Center" Padding="0,15,0,0" />
         </ListBox>
         
         <Button 

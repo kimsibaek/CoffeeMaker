@@ -25,11 +25,11 @@ namespace CoffeeMaker_Client.TCP
                 clientSocket.Connect("172.20.101.237", 9999);
                 //  MessageBox.Show("연결");
             }
-            catch (SocketException se)
+            catch (SocketException)
             {
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
