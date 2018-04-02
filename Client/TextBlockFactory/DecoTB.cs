@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoffeeMaker_Client.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +8,9 @@ using System.Windows.Media;
 
 namespace CoffeeMaker_Client.TextBlockFactory
 {
-    public class DecoTB : TB
+    public class DecoTB : TB, IDeco
     {
+        public IBeverage beverage;
         public DecoTB(string menu, int price)
         {
             Height = 40;
@@ -20,6 +22,17 @@ namespace CoffeeMaker_Client.TextBlockFactory
             Text = menu;
             Menu = menu;
             Price = price;
+        }
+
+        public void SetDeco(IBeverage beverage)
+        {
+            this.beverage = beverage;
+            this.beverage.SetOption(this.GetDescription());
+            this.beverage.SetPrice(beverage.GetPrice() + Price);
+        }
+        public string GetDescription()
+        {
+            return beverage.GetOption() + $", {Menu}";
         }
     }
 }

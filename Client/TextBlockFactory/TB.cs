@@ -7,11 +7,6 @@ using System.Windows.Controls;
 
 namespace CoffeeMaker_Client.TextBlockFactory
 {
-    public interface Test
-    {
-        TextBlock textBlock { get; set; }
-    }
-
     public class TB : TextBlock
     {
         public string Menu { get; set; }

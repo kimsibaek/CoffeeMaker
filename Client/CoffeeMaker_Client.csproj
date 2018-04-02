@@ -68,6 +68,8 @@
     <Compile Include="ButtonFactory\ButtonStore.cs" />
     <Compile Include="ButtonFactory\MainBtn.cs" />
     <Compile Include="ButtonFactory\SubBtn.cs" />
+    <Compile Include="Interface\IBeverage.cs" />
+    <Compile Include="Interface\IDeco.cs" />
     <Compile Include="Model\DrinkList.cs" />
     <Compile Include="TCP\TcpService.cs" />
     <Compile Include="TextBlockFactory\DecoTB.cs" />

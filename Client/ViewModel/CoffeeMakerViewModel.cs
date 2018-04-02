@@ -272,12 +272,12 @@ namespace CoffeeMaker_Client.ViewModel
             var test = parameter as ListBox;
             if (test.SelectedIndex == 0)
             {
-                _drink.AddDeco(new TB() { Name = "HOT", Price = 0 });
+                _drink.AddDeco(new DecoTB("HOT", 0));
                 _drink.DeleteDeco("ICE");
             }
             else
             {
-                _drink.AddDeco(new TB() { Name = "ICE", Price = 500 });
+                _drink.AddDeco(new DecoTB("ICE", 500));
                 _drink.DeleteDeco("HOT");
             }
             SetSumPrice( _drink.Price);
@@ -287,19 +287,19 @@ namespace CoffeeMaker_Client.ViewModel
             var test = parameter as ListBox;
             if (test.SelectedIndex == 0)
             {
-                _drink.AddDeco(new TB() { Name = "TALL", Price = 0 });
+                _drink.AddDeco(new DecoTB("TALL", 0));
                 _drink.DeleteDeco("GRANDE");
                 _drink.DeleteDeco("VENTI");
             }
             else if(test.SelectedIndex == 1)
             {
-                _drink.AddDeco(new TB() { Name = "GRANDE", Price = 1000 });
+                _drink.AddDeco(new DecoTB("GRANDE", 1000));
                 _drink.DeleteDeco("TALL");
                 _drink.DeleteDeco("VENTI");
             }
             else
             {
-                _drink.AddDeco(new TB() { Name = "VENTI", Price = 1500 });
+                _drink.AddDeco(new DecoTB("VENTI", 1500));
                 _drink.DeleteDeco("TALL");
                 _drink.DeleteDeco("GRANDE");
             }
@@ -424,8 +424,8 @@ namespace CoffeeMaker_Client.ViewModel
         private void CreateDrink(string name, int price)
         {
             _drink = new Drink(name, price);
-            _drink.AddDeco(new TB() { Name = "HOT", Price = 0 });
-            _drink.AddDeco(new TB() { Name = "TALL", Price = 0 });
+            _drink.AddDeco(new DecoTB("HOT", 0));
+            _drink.AddDeco(new DecoTB("TALL", 0));
 
             CoffeeName = $"Menu : {_drink.Name}";
             SetSumPrice(_drink.Cost);

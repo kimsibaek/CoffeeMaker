@@ -1,18 +1,19 @@
-﻿using CoffeeMaker_Client.TextBlockFactory;
+﻿using CoffeeMaker_Client.Interface;
+using CoffeeMaker_Client.TextBlockFactory;
 using System.Collections.Generic;
 using System.ComponentModel;
-
+using System;
 
 namespace CoffeeMaker_Client.Model
 {
-    public class Drink
+    public class Drink : IBeverage
     {
         #region Private Member
         private string _name;
         private int _cost;
         private int _price;
         private string _option;
-        private List<TB> _optionList;
+        private List<IDeco> _optionList;
         #endregion
 
         #region Property
@@ -36,7 +37,7 @@ namespace CoffeeMaker_Client.Model
             get { return _option; }
             set { _option = value; }
         }
-        public List<TB> OptionList
+        public List<IDeco> OptionList
         {
             get { return _optionList; }
             set { _optionList = value; }
@@ -48,7 +49,7 @@ namespace CoffeeMaker_Client.Model
             _name = name;
             _cost = cost;
             _price = _cost;
-            _optionList = new List<TB>();
+            _optionList = new List<IDeco>();
         }
         #endregion
 
@@ -56,37 +57,55 @@ namespace CoffeeMaker_Client.Model
         #endregion
 
         #region 메서드
-        public void AddDeco(TB deco)
+        public void AddDeco(DecoTB deco)
         {
-            if (!_optionList.Contains(deco))
+            var dc = deco as IDeco;
+            if (!_optionList.Contains(dc))
             {
-                _optionList.Add(deco);
+                _optionList.Add(dc);
                 _price += deco.Price;
             }
         }
-        public void DeleteDeco(TB deco)
+        public void DeleteDeco(DecoTB deco)
         {
-            if (_optionList.Contains(deco))
+            var dc = deco as IDeco;
+            if (_optionList.Contains(dc))
             {
-                _optionList.Remove(deco);
+                _optionList.Remove(dc);
                 _price -= deco.Price;
             }
         }
         public void DeleteDeco(string deco)
         {
-            foreach (TB item in _optionList)
+            foreach (DecoTB item in _optionList)
             {
-                if (item.Name == deco)
+                if (item.Menu == deco)
                 {
-                    _optionList.Remove(item);
+                    var dc = item as IDeco;
+                    _optionList.Remove(dc);
                     _price -= item.Price;
                     return;
                 } 
             }
         }
-        public int GetCost()
+        public int GetPrice()
         {
             return Price;
+        }
+
+        public void SetOption(string option)
+        {
+            Option = option;
+        }
+
+        public string GetOption()
+        {
+            return Option;
+        }
+
+        public void SetPrice(int price)
+        {
+            Price = price;
         }
         #endregion
     }
