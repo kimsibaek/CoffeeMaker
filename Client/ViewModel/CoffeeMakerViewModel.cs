@@ -376,7 +376,7 @@ namespace CoffeeMaker_Client.ViewModel
             {
                 Btn _menuBtn;
                 ButtonStore store = new ButtonStore();
-                _menuBtn = store.CreateBtn(BtnType.Sub, item["NAME"].ToString(), int.Parse(item["PRICE"].ToString()));
+                store.CreateBtn(out _menuBtn, BtnType.Sub, item["NAME"].ToString(), int.Parse(item["PRICE"].ToString()));
                 _menuBtn.Height = 100;
                 _menuBtn.Width = 200;
                 _menuBtn.Click += OnClick;
@@ -465,8 +465,8 @@ namespace CoffeeMaker_Client.ViewModel
             {
                 TB tb;
                 TextBlockStore tbStore = new TextBlockStore();
-                tb = tbStore.CreateTB(item["NAME"].ToString(), int.Parse(item["PRICE"].ToString()));
-                tbStore.CreateTB(out tb, TBType.Deco, "Deco", 500); 
+                tbStore.CreateTB(out tb, TBType.Deco, item["NAME"].ToString(), int.Parse(item["PRICE"].ToString()));
+                //tbStore.CreateTB(out tb, TBType.Deco, "Deco", 500); 
                 OptionList.Add(tb);
             }
 
