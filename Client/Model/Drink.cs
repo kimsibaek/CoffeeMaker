@@ -13,7 +13,7 @@ namespace CoffeeMaker_Client.Model
         private int _cost;
         private int _price;
         private string _option;
-        private List<IDeco> _optionList;
+        //private List<IDeco> _optionList;
         #endregion
 
         #region Property
@@ -37,11 +37,11 @@ namespace CoffeeMaker_Client.Model
             get { return _option; }
             set { _option = value; }
         }
-        public List<IDeco> OptionList
-        {
-            get { return _optionList; }
-            set { _optionList = value; }
-        }
+        //public List<IDeco> OptionList
+        //{
+        //    get { return _optionList; }
+        //    set { _optionList = value; }
+        //}
         #endregion
         #region 생성자
         public Drink(string name, int cost)
@@ -49,7 +49,7 @@ namespace CoffeeMaker_Client.Model
             _name = name;
             _cost = cost;
             _price = _cost;
-            _optionList = new List<IDeco>();
+            //_optionList = new List<IDeco>();
         }
         #endregion
 
@@ -57,52 +57,54 @@ namespace CoffeeMaker_Client.Model
         #endregion
 
         #region 메서드
-        public void AddDeco(DecoTB deco)
-        {
-            var dc = deco as IDeco;
-            if (!_optionList.Contains(dc))
-            {
-                _optionList.Add(dc);
-                _price += deco.Price;
-            }
-        }
-        public void DeleteDeco(DecoTB deco)
-        {
-            var dc = deco as IDeco;
-            if (_optionList.Contains(dc))
-            {
-                _optionList.Remove(dc);
-                _price -= deco.Price;
-            }
-        }
-        public void DeleteDeco(string deco)
-        {
-            foreach (DecoTB item in _optionList)
-            {
-                if (item.Menu == deco)
-                {
-                    var dc = item as IDeco;
-                    _optionList.Remove(dc);
-                    _price -= item.Price;
-                    return;
-                } 
-            }
-        }
+        //public void AddDeco(DecoTB deco)
+        //{
+        //    var dc = deco as IDeco;
+        //    if (!_optionList.Contains(dc))
+        //    {
+        //        _optionList.Add(dc);
+        //    }
+        //}
+        //public void DeleteDeco(DecoTB deco)
+        //{
+        //    var dc = deco as IDeco;
+        //    if (_optionList.Contains(dc))
+        //    {
+        //        _optionList.Remove(dc);
+        //    }
+        //}
+        //public void DeleteDeco(string deco)
+        //{
+        //    foreach (DecoTB item in _optionList)
+        //    {
+        //        if (item.Menu == deco)
+        //        {
+        //            var dc = item as IDeco;
+        //            _optionList.Remove(dc);
+        //            return;
+        //        } 
+        //    }
+        //}
         public int GetPrice()
         {
             return Price;
         }
 
-        public void SetOption(string option)
+        public bool SetOption(string option)
         {
+            if (Option == option)
+            {
+                Option = option;
+                return false;
+            }
             Option = option;
+            return true;
         }
-
+        
         public string GetOption()
         {
             return Option;
         }
-
         public void SetPrice(int price)
         {
             Price = price;

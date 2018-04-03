@@ -109,7 +109,7 @@
                                 <ColumnDefinition SharedSizeGroup="Toggle"/>
                                 <ColumnDefinition Width="35"/>
                                 <ColumnDefinition Width="70"/>
-                                <ColumnDefinition Width="225"/>
+                                <ColumnDefinition SharedSizeGroup="Option"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Height="30" Foreground="White" Text="Num" FontSize="18" Style="{StaticResource TextBlockBoldStyle}"/>
                             <!-- Empty TreeViewItem to measure the size of its ToggleButton into the "Toggle" group-->
@@ -135,7 +135,7 @@
                                     <ColumnDefinition SharedSizeGroup="Toggle"/>
                                     <ColumnDefinition Width="30"/>
                                     <ColumnDefinition Width="70"/>
-                                    <ColumnDefinition Width="175"/>
+                                    <ColumnDefinition SharedSizeGroup="Option"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="{Binding Number, Mode=TwoWay}" Style="{StaticResource TextBlockStyle0}"/>
                                 <TextBlock Grid.Column="1" Text="{Binding MenuName, Mode=TwoWay}" Style="{StaticResource TextBlockStyle0}"/>
@@ -155,7 +155,7 @@
                                             <ColumnDefinition SharedSizeGroup="Toggle"/>
                                             <ColumnDefinition Width="30"/>
                                             <ColumnDefinition Width="70"/>
-                                            <ColumnDefinition Width="175"/>
+                                            <ColumnDefinition SharedSizeGroup="Option"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="{Binding Number, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
                                         <TextBlock Grid.Column="1" Text="{Binding MenuName, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
@@ -175,7 +175,7 @@
                                                     <ColumnDefinition />
                                                     <ColumnDefinition Width="30"/>
                                                     <ColumnDefinition Width="70"/>
-                                                    <ColumnDefinition Width="175"/>
+                                                    <ColumnDefinition SharedSizeGroup="Option"/>
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Grid.Column="0" Text="{Binding Number, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>
                                                 <TextBlock Grid.Column="1" Text="{Binding MenuName, Mode=TwoWay}" Style="{StaticResource TextBlockStyle}"/>

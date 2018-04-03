@@ -8,6 +8,9 @@ namespace CoffeeMaker_Client.Interface
 {
     public interface IDeco
     {
-        string GetDescription();
+        void CreateDeco(IBeverage beverage);
+        void DeleteDeco(IBeverage beverage);
+        string AddOption();
+        string RemoveOption();
     }
 }

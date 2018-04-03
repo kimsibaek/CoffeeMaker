@@ -8,9 +8,9 @@ namespace CoffeeMaker_Client.Interface
 {
     public interface IBeverage
     {
-        void SetOption(string option);
+        bool SetOption(string option);
         string GetOption();
-        void SetPrice(int cost);
+        void SetPrice(int price);
         int GetPrice();
     }
 }

@@ -155,8 +155,8 @@ namespace CoffeeMaker_Client.ViewModel
         #region 생성자
         public CoffeeMakerViewModel()
         {
-            tcp = new TcpService();
-            database = new Database.Database();
+            //tcp = new TcpService();
+            //database = new Database.Database();
             _paidTotal = 0;
             _discount = 0;
             _total = 0;
@@ -241,6 +241,13 @@ namespace CoffeeMaker_Client.ViewModel
                 return new RelayCommand(SizeSelectionExecute);
             }
         }
+        public ICommand DecoSelectionChanged
+        {
+            get
+            {
+                return new RelayCommand(DecoSelectionExecute);
+            }
+        }
         #endregion
 
         #region Command Method
@@ -310,13 +317,21 @@ namespace CoffeeMaker_Client.ViewModel
             var test = parameter as ListBox;
             if (test.SelectedIndex == 0)
             {
-                _drink.AddDeco(new DecoTB("HOT", 0));
-                _drink.DeleteDeco("ICE");
+                DecoTB hot = new DecoTB("HOT", 0);
+                hot.CreateDeco(_drink);
+                DecoTB ice = new DecoTB("ICE", 500);
+                ice.DeleteDeco(_drink);
+                //_drink.AddDeco(new DecoTB("HOT", 0));
+                //_drink.DeleteDeco("ICE");
             }
             else
             {
-                _drink.AddDeco(new DecoTB("ICE", 500));
-                _drink.DeleteDeco("HOT");
+                DecoTB hot = new DecoTB("HOT", 0);
+                hot.DeleteDeco(_drink);
+                DecoTB ice = new DecoTB("ICE", 500);
+                ice.CreateDeco(_drink);
+                //_drink.AddDeco(new DecoTB("ICE", 500));
+                //_drink.DeleteDeco("HOT");
             }
             SetSumPrice( _drink.Price);
         }
@@ -325,23 +340,64 @@ namespace CoffeeMaker_Client.ViewModel
             var test = parameter as ListBox;
             if (test.SelectedIndex == 0)
             {
-                _drink.AddDeco(new DecoTB("TALL", 0));
-                _drink.DeleteDeco("GRANDE");
-                _drink.DeleteDeco("VENTI");
+                DecoTB tall = new DecoTB("TALL", 0);
+                tall.CreateDeco(_drink);
+                DecoTB grande = new DecoTB("GRANDE", 1000);
+                grande.DeleteDeco(_drink);
+                DecoTB venti = new DecoTB("VENTI", 1500);
+                venti.DeleteDeco(_drink);
+
+                //_drink.AddDeco(new DecoTB("TALL", 0));
+                //_drink.DeleteDeco("GRANDE");
+                //_drink.DeleteDeco("VENTI");
             }
             else if(test.SelectedIndex == 1)
             {
-                _drink.AddDeco(new DecoTB("GRANDE", 1000));
-                _drink.DeleteDeco("TALL");
-                _drink.DeleteDeco("VENTI");
+                DecoTB tall = new DecoTB("TALL", 0);
+                tall.DeleteDeco(_drink);
+                DecoTB grande = new DecoTB("GRANDE", 1000);
+                grande.CreateDeco(_drink);
+                DecoTB venti = new DecoTB("VENTI", 1500);
+                venti.DeleteDeco(_drink);
+
+                //_drink.AddDeco(new DecoTB("GRANDE", 1000));
+                //_drink.DeleteDeco("TALL");
+                //_drink.DeleteDeco("VENTI");
             }
             else
             {
-                _drink.AddDeco(new DecoTB("VENTI", 1500));
-                _drink.DeleteDeco("TALL");
-                _drink.DeleteDeco("GRANDE");
+                DecoTB tall = new DecoTB("TALL", 0);
+                tall.DeleteDeco(_drink);
+                DecoTB grande = new DecoTB("GRANDE", 1000);
+                grande.DeleteDeco(_drink);
+                DecoTB venti = new DecoTB("VENTI", 1500);
+                venti.CreateDeco(_drink);
+
+                //_drink.AddDeco(new DecoTB("VENTI", 1500));
+                //_drink.DeleteDeco("TALL");
+                //_drink.DeleteDeco("GRANDE");
             }
             SetSumPrice(_drink.Price);
+        }
+        public void DecoSelectionExecute(object parameter)
+        {
+            var item = parameter as ListBox;
+            if(item == null)
+            {
+                return;
+            }
+            foreach (var deco in item.Items)
+            {
+                var d = deco as DecoTB;
+                d.DeleteDeco(_drink);
+            }
+            foreach (var deco in item.SelectedItems)
+            {
+                var d = deco as DecoTB;
+                d.CreateDeco(_drink);
+            }
+            SetSumPrice(_drink.Price);
+            //deco.CreateDeco(_drink);
         }
         #endregion
 
@@ -369,30 +425,56 @@ namespace CoffeeMaker_Client.ViewModel
         #region Methods
         private void SetMenu()
         {
-            DBQuery query = new DBQuery();
-            DataTable table  = database.ExecuteQuery(query.SelectDrink());
-
-            foreach (DataRow item in table.Rows)
-            {
-                Btn _menuBtn;
-                ButtonStore store = new ButtonStore();
-                store.CreateBtn(out _menuBtn, BtnType.Sub, item["NAME"].ToString(), int.Parse(item["PRICE"].ToString()));
-                _menuBtn.Height = 100;
-                _menuBtn.Width = 200;
-                _menuBtn.Click += OnClick;
-                ButtonList.Add(_menuBtn);
-            }
-
-            //for (int i = 0; i < 10; i++)
+            //DBQuery query = new DBQuery();
+            //DataTable table  = database.ExecuteQuery(query.SelectDrink());
+            
+            //ButtonStore store = new ButtonStore();
+            //foreach (DataRow item in table.Rows)
             //{
             //    Btn _menuBtn;
-            //    ButtonStore store = new ButtonStore();
-            //    _menuBtn = store.CreateBtn(BtnType.Sub, "아메리카노", 1500);
+            //    store.CreateBtn(out _menuBtn, BtnType.Sub, item["NAME"].ToString(), int.Parse(item["PRICE"].ToString()));
             //    _menuBtn.Height = 100;
             //    _menuBtn.Width = 200;
             //    _menuBtn.Click += OnClick;
             //    ButtonList.Add(_menuBtn);
             //}
+
+            ButtonStore store = new ButtonStore();
+
+            Btn _menuBtn0;
+            store.CreateBtn(out _menuBtn0, BtnType.Sub, "에스프레소", 1000);
+            _menuBtn0.Height = 100;
+            _menuBtn0.Width = 200;
+            _menuBtn0.Click += OnClick;
+            ButtonList.Add(_menuBtn0);
+
+            Btn _menuBtn1;
+            store.CreateBtn(out _menuBtn1, BtnType.Sub, "아메리카노", 1500);
+            _menuBtn1.Height = 100;
+            _menuBtn1.Width = 200;
+            _menuBtn1.Click += OnClick;
+            ButtonList.Add(_menuBtn1);
+
+            Btn _menuBtn2;
+            store.CreateBtn(out _menuBtn2, BtnType.Sub, "카페라떼", 2500);
+            _menuBtn2.Height = 100;
+            _menuBtn2.Width = 200;
+            _menuBtn2.Click += OnClick;
+            ButtonList.Add(_menuBtn2);
+
+            Btn _menuBtn3;
+            store.CreateBtn(out _menuBtn3, BtnType.Sub, "카라멜마끼아또", 3000);
+            _menuBtn3.Height = 100;
+            _menuBtn3.Width = 200;
+            _menuBtn3.Click += OnClick;
+            ButtonList.Add(_menuBtn3);
+
+            Btn _menuBtn4;
+            store.CreateBtn(out _menuBtn4, BtnType.Sub, "바닐라라떼", 3500);
+            _menuBtn4.Height = 100;
+            _menuBtn4.Width = 200;
+            _menuBtn4.Click += OnClick;
+            ButtonList.Add(_menuBtn4);
         }
         private void AddTreeViewItem(Drink drink)
         {
@@ -458,31 +540,45 @@ namespace CoffeeMaker_Client.ViewModel
         {
             OptionList.Clear();
             CreateDrink(name, price);
-            DBQuery query = new DBQuery();
-            DataTable table = database.ExecuteQuery(query.SelectDeco());
+            //DBQuery query = new DBQuery();
+            //DataTable table = database.ExecuteQuery(query.SelectDeco());
 
-            foreach (DataRow item in table.Rows)
-            {
-                TB tb;
-                TextBlockStore tbStore = new TextBlockStore();
-                tbStore.CreateTB(out tb, TBType.Deco, item["NAME"].ToString(), int.Parse(item["PRICE"].ToString()));
-                //tbStore.CreateTB(out tb, TBType.Deco, "Deco", 500); 
-                OptionList.Add(tb);
-            }
-
-            //for (int i = 0; i < 10; i++)
+            //foreach (DataRow item in table.Rows)
             //{
             //    TB tb;
             //    TextBlockStore tbStore = new TextBlockStore();
-            //    tb = tbStore.CreateTB("Deco", 500); 
+            //    tbStore.CreateTB(out tb, TBType.Deco, item["NAME"].ToString(), int.Parse(item["PRICE"].ToString()));
+            //    //tbStore.CreateTB(out tb, TBType.Deco, "Deco", 500); 
             //    OptionList.Add(tb);
             //}
+
+            TextBlockStore tbStore = new TextBlockStore();
+
+            TB tb0;
+            tbStore.CreateTB(out tb0, TBType.Deco, "Shot", 500);
+            OptionList.Add(tb0);
+
+            TB tb1;
+            tbStore.CreateTB(out tb1, TBType.Deco, "휘핑크림", 1000);
+            OptionList.Add(tb1);
+
+            TB tb2;
+            tbStore.CreateTB(out tb2, TBType.Deco, "시나몬", 1000);
+            OptionList.Add(tb2);
+
+            TB tb;
+            tbStore.CreateTB(out tb, TBType.Deco, "초코", 500);
+            OptionList.Add(tb);
         }
         private void CreateDrink(string name, int price)
         {
             _drink = new Drink(name, price);
-            _drink.AddDeco(new DecoTB("HOT", 0));
-            _drink.AddDeco(new DecoTB("TALL", 0));
+            DecoTB hot = new DecoTB("HOT", 0);
+            hot.CreateDeco(_drink);
+            DecoTB tall = new DecoTB("TALL", 0);
+            tall.CreateDeco(_drink);
+            //_drink.AddDeco(new DecoTB("HOT", 0));
+            //_drink.AddDeco(new DecoTB("TALL", 0));
 
             CoffeeName = $"Menu : {_drink.Name}";
             SetSumPrice(_drink.Cost);
@@ -507,17 +603,17 @@ namespace CoffeeMaker_Client.ViewModel
         }
         private void SetPrice()
         {
-            try
-            {
-                _drink.Price = _drink.Cost;
-                foreach (TB item in _drink.OptionList)
-                {
-                    _drink.Price += item.Price;
-                }
-            }
-            catch (Exception)
-            {
-            }
+            //try
+            //{
+            //    _drink.Price = _drink.Cost;
+            //    foreach (TB item in _drink.OptionList)
+            //    {
+            //        _drink.Price += item.Price;
+            //    }
+            //}
+            //catch (Exception)
+            //{
+            //}
            
         }
         #endregion

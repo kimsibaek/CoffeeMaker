@@ -24,15 +24,35 @@ namespace CoffeeMaker_Client.TextBlockFactory
             Price = price;
         }
 
-        public void SetDeco(IBeverage beverage)
+        public void CreateDeco(IBeverage beverage)
         {
             this.beverage = beverage;
-            this.beverage.SetOption(this.GetDescription());
-            this.beverage.SetPrice(beverage.GetPrice() + Price);
+            if (this.beverage.SetOption(this.AddOption()))
+            {
+                this.beverage.SetPrice(beverage.GetPrice() + Price);
+            }
         }
-        public string GetDescription()
+        public void DeleteDeco(IBeverage beverage)
         {
-            return beverage.GetOption() + $", {Menu}";
+            this.beverage = beverage;
+            if (this.beverage.SetOption(this.RemoveOption()))
+            {
+                this.beverage.SetPrice(beverage.GetPrice() - Price);
+            }
+        }
+        public string AddOption()
+        {
+            return beverage.GetOption() + $" {Menu}";
+        }
+        public string RemoveOption()
+        {
+            string[] str = beverage.GetOption().Split(new string[]{ $" {Menu}"}, StringSplitOptions.None);
+            string result = "";
+            foreach (var item in str)
+            {
+                result += item;
+            }
+            return result;
         }
     }
 }
