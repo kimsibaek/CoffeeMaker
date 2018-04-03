@@ -10,7 +10,5 @@ namespace CoffeeMaker_Client.Interface
     {
         void CreateDeco(IBeverage beverage);
         void DeleteDeco(IBeverage beverage);
-        string AddOption();
-        string RemoveOption();
     }
 }

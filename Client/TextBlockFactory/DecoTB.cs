@@ -10,7 +10,11 @@ namespace CoffeeMaker_Client.TextBlockFactory
 {
     public class DecoTB : TB, IDeco
     {
+        #region 필드
         public IBeverage beverage;
+        #endregion
+
+        #region 생성자
         public DecoTB(string menu, int price)
         {
             Height = 40;
@@ -23,28 +27,15 @@ namespace CoffeeMaker_Client.TextBlockFactory
             Menu = menu;
             Price = price;
         }
+        #endregion
 
-        public void CreateDeco(IBeverage beverage)
-        {
-            this.beverage = beverage;
-            if (this.beverage.SetOption(this.AddOption()))
-            {
-                this.beverage.SetPrice(beverage.GetPrice() + Price);
-            }
-        }
-        public void DeleteDeco(IBeverage beverage)
-        {
-            this.beverage = beverage;
-            if (this.beverage.SetOption(this.RemoveOption()))
-            {
-                this.beverage.SetPrice(beverage.GetPrice() - Price);
-            }
-        }
-        public string AddOption()
+        #region 메서드
+        public string AddOption(IBeverage beverage)
         {
             return beverage.GetOption() + $" {Menu}";
         }
-        public string RemoveOption()
+
+        public string RemoveOption(IBeverage beverage)
         {
             string[] str = beverage.GetOption().Split(new string[]{ $" {Menu}"}, StringSplitOptions.None);
             string result = "";
@@ -54,5 +45,24 @@ namespace CoffeeMaker_Client.TextBlockFactory
             }
             return result;
         }
+
+        public void CreateDeco(IBeverage beverage)
+        {
+            this.beverage = beverage;
+            if (this.beverage.SetOption(this.AddOption(beverage)))
+            {
+                this.beverage.SetPrice(beverage.GetPrice() + Price);
+            }
+        }
+
+        public void DeleteDeco(IBeverage beverage)
+        {
+            this.beverage = beverage;
+            if (this.beverage.SetOption(this.RemoveOption(beverage)))
+            {
+                this.beverage.SetPrice(beverage.GetPrice() - Price);
+            }
+        }
+        #endregion
     }
 }

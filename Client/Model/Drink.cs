@@ -85,6 +85,11 @@ namespace CoffeeMaker_Client.Model
         //        } 
         //    }
         //}
+        public void SetPrice(int price)
+        {
+            Price = price;
+        }
+
         public int GetPrice()
         {
             return Price;
@@ -105,10 +110,7 @@ namespace CoffeeMaker_Client.Model
         {
             return Option;
         }
-        public void SetPrice(int price)
-        {
-            Price = price;
-        }
+       
         #endregion
     }
 }
