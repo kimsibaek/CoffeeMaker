@@ -21,9 +21,12 @@ namespace CoffeeMaker_Server.Database
                 param.Value = ObjectToString(dataTable,i).ToArray();
                 param.CollectionType = OracleCollectionType.PLSQLAssociativeArray;
                 param.Size =dataTable.Columns.Count;
-                _arrayBindCount = dataTable.Rows.Count;
+                //_arrayBindCount = dataTable.Rows.Count;
                 _parameters.Add(param);
             }
+            //Output Parameters
+            _parameters.Add(new OracleParameter("OUT_MESSAGE", OracleDbType.Varchar2, ParameterDirection.Output));
+            _parameters.Add(new OracleParameter("OUT_ERRORCNT", OracleDbType.Int32, ParameterDirection.Output));
         }
         private List<string> ObjectToString(DataTable dataTable, int index)
         {
@@ -43,6 +46,7 @@ namespace CoffeeMaker_Server.Database
             string package = "PKG_CM_ORDER.CM_ORDERHISTORY_INSERT";
             _parameters.Clear();
             _arrayBindCount = 0;
+
             CreateParams(dtOrderHistory);
             result = ExcutePakage(package, _parameters, CommandType.StoredProcedure, _arrayBindCount);
 

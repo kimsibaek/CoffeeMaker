@@ -12,11 +12,12 @@ namespace CoffeeMaker_Server.Maker
 {
     public class OrderListener
     {
-        private readonly List<OrderHistoryItem> _orderHistoryList;
-        private readonly AccountItem _accountInfo;
-        private readonly DbQuery _query = new DbQuery();
+        private  List<OrderHistoryItem> _orderHistoryList;
+        private  AccountItem _accountInfo;
+        private  DbQuery _query = new DbQuery();
 
-        public OrderListener(string tcpStr)
+       
+        public void GetMessage(string tcpStr)
         {
             var orderInfo = JsonExtention.Deserialize<JsonOrderHistory>(tcpStr);
             _orderHistoryList = orderInfo.OrderHistoryList;
@@ -26,10 +27,21 @@ namespace CoffeeMaker_Server.Maker
 
         private void DataProcess()
         {
-            Create_OrderHistoryData();
-            Create_AccountData();
+
+            //트랜잭션 관리 추가..
+            int res = 0;
+            if (Create_AccountData() >= 0)
+            {
+                Console.Write("1건의 주문이 처리되었습니다.\n");
+                res = Create_OrderHistoryData();
+                if (res >= 0)
+                {
+                    Console.Write("주문 내역 처리 완료");
+                }
+            }
+
         }
-        private void Create_OrderHistoryData()
+        private int Create_OrderHistoryData()
         {
             int result = 0;
             DataTable dtOrderHistory = new DataTable();
@@ -39,7 +51,7 @@ namespace CoffeeMaker_Server.Maker
             dtOrderHistory.Columns.Add("DRINKPRICE", typeof(string));
             dtOrderHistory.Columns.Add("HOTICE", typeof(string));
             dtOrderHistory.Columns.Add("SIZE", typeof(string));
-            dtOrderHistory.Columns.Add("SHOT", typeof(string));
+            dtOrderHistory.Columns.Add("MENUOPTION", typeof(string));
             dtOrderHistory.Columns.Add("ACCOUNTNO", typeof(string));
 
             foreach (var orderHistoryItem in _orderHistoryList)
@@ -51,19 +63,21 @@ namespace CoffeeMaker_Server.Maker
                 drOrderHisytory["DRINKPRICE"] = orderHistoryItem.Price;
                 drOrderHisytory["HOTICE"] = orderHistoryItem.DecoList[0];
                 drOrderHisytory["SIZE"] = orderHistoryItem.DecoList[1];
-                drOrderHisytory["SHOT"] = orderHistoryItem.DecoList[2];
+                drOrderHisytory["MENUOPTION"] = orderHistoryItem.DecoList[2];
                 dtOrderHistory.Rows.Add(drOrderHisytory);
             }
             //dtOrderHistory
             result= _query.DML_InsertOrderHistory(dtOrderHistory);
 
-            if (result < 0)
+            if (result > 0)
             {
                 Console.Write("Order History Error");
             }
 
+            return result;
+
         }
-        private void Create_AccountData()
+        private int Create_AccountData()
         {
             int result = 0;
             DataTable dtAccount = new DataTable();
@@ -81,12 +95,15 @@ namespace CoffeeMaker_Server.Maker
             drAccount["TOTAL"] = _accountInfo.Total;
             drAccount["USERNO"] = _accountInfo.UserNo;
 
+            dtAccount.Rows.Add(drAccount);
+
             result = _query.DML_InsertAccount(dtAccount);
 
-            if (result < 0)
+            if (result > 0)
             {
                 Console.Write("Account Error");
             }
+            return result;
         }
     }
 }

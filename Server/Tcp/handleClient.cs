@@ -7,11 +7,13 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CoffeeMaker_Server.Maker;
 
 namespace CoffeeMaker_Server.Tcp
 {
     public class handleClient
     {
+        OrderListener _orderListener = new OrderListener();
         TcpClient clientSocket;
         int clientNo;
 
@@ -48,7 +50,9 @@ namespace CoffeeMaker_Server.Tcp
                     bytes = stream.Read(buffer, 0, buffer.Length);
                     msg = Encoding.Unicode.GetString(buffer, 0, bytes);
                     msg = msg.Substring(0, msg.IndexOf("$"));
-                    msg = "Data Received : " + msg;
+
+                    //Message 처리
+                    _orderListener.GetMessage(msg);
 
                     if (OnReceived != null)
                         OnReceived(msg);

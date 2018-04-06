@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using Oracle.ManagedDataAccess.Client;
 using System.Data;
+using System.Data.SqlClient;
 using System.Windows;
+using Oracle.ManagedDataAccess.Types;
 
 namespace CoffeeMaker_Server.Database
 {
@@ -112,30 +114,108 @@ namespace CoffeeMaker_Server.Database
         public int ExcutePakage(string pakage, List<OracleParameter> parameters, CommandType commandType, int arrayBindCount)
         {
             int result = 0;
+            int outResult = 0;
+            OracleTransaction transaction = _connection.BeginTransaction();
             using (OracleCommand cmd = _connection.CreateCommand())
             {
                 cmd.CommandText = pakage;
                 cmd.CommandType = commandType;
                 if (parameters != null && parameters.Count > 0)
                 {
-                    if (arrayBindCount > 0)
+                    if (arrayBindCount >= 0)
                     {
-                        cmd.ArrayBindCount = arrayBindCount;
+                       // cmd.ArrayBindCount = arrayBindCount;
 
                         foreach (var param in parameters)
                         {
                             OracleParameter parameter = new OracleParameter(param.ParameterName, param.OracleDbType);
                             parameter.Direction = param.Direction;
                             parameter.Value = param.Value;
-                            parameter.ArrayBindSize = new int[arrayBindCount];
+                           
+                            if (param.CollectionType == OracleCollectionType.PLSQLAssociativeArray)
+                            {
+                                parameter.CollectionType = OracleCollectionType.PLSQLAssociativeArray;
+                                
+
+                                if (param.Size == 0)
+                                {
+                                    parameter.Size = 1;
+
+                                    if (param.OracleDbType == OracleDbType.Varchar2)
+                                    {
+                                        parameter.Value = new OracleString[1] { OracleString.Null };
+                                    }
+                                    else
+                                    {
+                                        parameter.Value = new OracleDecimal[1] { OracleDecimal.Null };
+                                    }
+                                }
+                                else if(param.Size ==1)
+                                {
+                                    parameter.Size = param.Size + 1;
+
+                                    if (param.OracleDbType == OracleDbType.Varchar2)
+                                    {
+                                        var list = new List<string>((string[])param.Value);
+                                        list.Insert(0, "");
+
+                                        parameter.Value = list.ToArray();
+                                    }
+                                    else
+                                    {
+                                        var list = new List<int>((int[])param.Value);
+                                        list.Insert(0, 0);
+
+                                        parameter.Value = list.ToArray();
+                                    }
+                                }
+                                else
+                                {
+                                    if (param.OracleDbType == OracleDbType.Varchar2)
+                                    {
+                                        var list = new List<string>((string[])param.Value);
+                                        parameter.Value = list.ToArray();
+                                    }
+                                    else
+                                    {
+                                        var list = new List<int>((int[])param.Value);
+                                        parameter.Value = list.ToArray();
+                                    }
+                                }
+
+                            }
+                            else if (param.Direction == ParameterDirection.Output)
+                            {
+                                if (param.DbType == DbType.Int32)
+                                {
+                                    param.DbType = DbType.Int32;
+                                    param.Size = 256;
+                                    parameter.Size = param.Size;
+                                }
+                                param.DbType = DbType.AnsiStringFixedLength;
+                                param.Size = 256;
+                                parameter.Size = param.Size;
+                            }
                             cmd.Parameters.Add(parameter);
                         }
                     }
                 }
                 result = cmd.ExecuteNonQuery();
+                if (parameters != null)
+                { 
+                    foreach (var param in parameters)
+                    {
+                        if (param.OracleDbType == OracleDbType.Int32)
+                        {
+                            outResult = int.Parse(param.Value.ToString());
+                        }
+                    }
+                }
 
-            }
-
+                result = outResult;
+                transaction.Commit();
+                }
+            
             return result;
         }
 

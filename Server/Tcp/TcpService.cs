@@ -64,8 +64,7 @@ namespace CoffeeMaker_Server.Tcp
         }
         private void OrderList(string text)
         {
-            OrderListener orderListener = new OrderListener(text);
-            
+            Console.WriteLine(text);
         }
 
         public void TcpClose()
