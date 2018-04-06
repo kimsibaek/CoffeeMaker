@@ -155,8 +155,8 @@ namespace CoffeeMaker_Client.ViewModel
         #region 생성자
         public CoffeeMakerViewModel()
         {
-            //tcp = new TcpService();
-            //database = new Database.Database();
+            tcp = new TcpService();
+            database = new Database.Database();
             _paidTotal = 0;
             _discount = 0;
             _total = 0;
@@ -253,24 +253,24 @@ namespace CoffeeMaker_Client.ViewModel
         #region Command Method
         public void PayExecute(object parameter)
         {
-            //JsonOrderHistory data = new JsonOrderHistory();
-            //data.AccountInfo.AccountNo = "100011";
-            //data.AccountInfo.Receive = "2500"; // PaidTotal.ToString();
-            //data.AccountInfo.Discount = "0"; // Discount.ToString();
-            //data.AccountInfo.Total = "2500"; // Total.ToString();
-            //data.AccountInfo.UserNo = "0";
-            //OrderHistoryItem item = new OrderHistoryItem();
-            //item.DecoList = new List<string>();
-            //item.AccountNo = "100011";
-            //item.OrderNo = "10006";
-            //item.DrinkNo = "1001";
-            //item.Price = "2500";
-            //item.DecoList.Add("HOT");
-            //item.DecoList.Add("103");
-            //item.DecoList.Add("106");
-            //data.OrderHistoryList.Add(item);
-            //SendMsg = JsonExtention.Serialize(data);
-            //string result = tcp.SendMessage(SendMsg);
+            JsonOrderHistory data = new JsonOrderHistory();
+            data.AccountInfo.AccountNo = "100014";
+            data.AccountInfo.Receive = "2500"; // PaidTotal.ToString();
+            data.AccountInfo.Discount = "0"; // Discount.ToString();
+            data.AccountInfo.Total = "2500"; // Total.ToString();
+            data.AccountInfo.UserNo = "0";
+            OrderHistoryItem item = new OrderHistoryItem();
+            item.DecoList = new List<string>();
+            item.AccountNo = "100014";
+            item.OrderNo = "10006";
+            item.DrinkNo = "1001";
+            item.Price = "2500";
+            item.DecoList.Add("HOTt");
+            item.DecoList.Add("103");
+            item.DecoList.Add("106");
+            data.OrderHistoryList.Add(item);
+            SendMsg = JsonExtention.Serialize(data);
+            string result = tcp.SendMessage(SendMsg);
 
         }
         public void DeleteExecute(object parameter)
@@ -425,56 +425,56 @@ namespace CoffeeMaker_Client.ViewModel
         #region Methods
         private void SetMenu()
         {
-            //DBQuery query = new DBQuery();
-            //DataTable table  = database.ExecuteQuery(query.SelectDrink());
-            
-            //ButtonStore store = new ButtonStore();
-            //foreach (DataRow item in table.Rows)
-            //{
-            //    Btn _menuBtn;
-            //    store.CreateBtn(out _menuBtn, BtnType.Sub, item["NAME"].ToString(), int.Parse(item["PRICE"].ToString()));
-            //    _menuBtn.Height = 100;
-            //    _menuBtn.Width = 200;
-            //    _menuBtn.Click += OnClick;
-            //    ButtonList.Add(_menuBtn);
-            //}
+            DBQuery query = new DBQuery();
+            DataTable table = database.ExecuteQuery(query.SelectDrink());
 
             ButtonStore store = new ButtonStore();
+            foreach (DataRow item in table.Rows)
+            {
+                Btn _menuBtn;
+                store.CreateBtn(out _menuBtn, BtnType.Sub, item["NAME"].ToString(), int.Parse(item["PRICE"].ToString()));
+                _menuBtn.Height = 100;
+                _menuBtn.Width = 200;
+                _menuBtn.Click += OnClick;
+                ButtonList.Add(_menuBtn);
+            }
 
-            Btn _menuBtn0;
-            store.CreateBtn(out _menuBtn0, BtnType.Sub, "에스프레소", 1000);
-            _menuBtn0.Height = 100;
-            _menuBtn0.Width = 200;
-            _menuBtn0.Click += OnClick;
-            ButtonList.Add(_menuBtn0);
+            //ButtonStore store = new ButtonStore();
 
-            Btn _menuBtn1;
-            store.CreateBtn(out _menuBtn1, BtnType.Sub, "아메리카노", 1500);
-            _menuBtn1.Height = 100;
-            _menuBtn1.Width = 200;
-            _menuBtn1.Click += OnClick;
-            ButtonList.Add(_menuBtn1);
+            //Btn _menuBtn0;
+            //store.CreateBtn(out _menuBtn0, BtnType.Sub, "에스프레소", 1000);
+            //_menuBtn0.Height = 100;
+            //_menuBtn0.Width = 200;
+            //_menuBtn0.Click += OnClick;
+            //ButtonList.Add(_menuBtn0);
 
-            Btn _menuBtn2;
-            store.CreateBtn(out _menuBtn2, BtnType.Sub, "카페라떼", 2500);
-            _menuBtn2.Height = 100;
-            _menuBtn2.Width = 200;
-            _menuBtn2.Click += OnClick;
-            ButtonList.Add(_menuBtn2);
+            //Btn _menuBtn1;
+            //store.CreateBtn(out _menuBtn1, BtnType.Sub, "아메리카노", 1500);
+            //_menuBtn1.Height = 100;
+            //_menuBtn1.Width = 200;
+            //_menuBtn1.Click += OnClick;
+            //ButtonList.Add(_menuBtn1);
 
-            Btn _menuBtn3;
-            store.CreateBtn(out _menuBtn3, BtnType.Sub, "카라멜마끼아또", 3000);
-            _menuBtn3.Height = 100;
-            _menuBtn3.Width = 200;
-            _menuBtn3.Click += OnClick;
-            ButtonList.Add(_menuBtn3);
+            //Btn _menuBtn2;
+            //store.CreateBtn(out _menuBtn2, BtnType.Sub, "카페라떼", 2500);
+            //_menuBtn2.Height = 100;
+            //_menuBtn2.Width = 200;
+            //_menuBtn2.Click += OnClick;
+            //ButtonList.Add(_menuBtn2);
 
-            Btn _menuBtn4;
-            store.CreateBtn(out _menuBtn4, BtnType.Sub, "바닐라라떼", 3500);
-            _menuBtn4.Height = 100;
-            _menuBtn4.Width = 200;
-            _menuBtn4.Click += OnClick;
-            ButtonList.Add(_menuBtn4);
+            //Btn _menuBtn3;
+            //store.CreateBtn(out _menuBtn3, BtnType.Sub, "카라멜마끼아또", 3000);
+            //_menuBtn3.Height = 100;
+            //_menuBtn3.Width = 200;
+            //_menuBtn3.Click += OnClick;
+            //ButtonList.Add(_menuBtn3);
+
+            //Btn _menuBtn4;
+            //store.CreateBtn(out _menuBtn4, BtnType.Sub, "바닐라라떼", 3500);
+            //_menuBtn4.Height = 100;
+            //_menuBtn4.Width = 200;
+            //_menuBtn4.Click += OnClick;
+            //ButtonList.Add(_menuBtn4);
         }
         private void AddTreeViewItem(Drink drink)
         {
@@ -540,35 +540,35 @@ namespace CoffeeMaker_Client.ViewModel
         {
             OptionList.Clear();
             CreateDrink(name, price);
-            //DBQuery query = new DBQuery();
-            //DataTable table = database.ExecuteQuery(query.SelectDeco());
+            DBQuery query = new DBQuery();
+            DataTable table = database.ExecuteQuery(query.SelectDeco());
 
-            //foreach (DataRow item in table.Rows)
-            //{
-            //    TB tb;
-            //    TextBlockStore tbStore = new TextBlockStore();
-            //    tbStore.CreateTB(out tb, TBType.Deco, item["NAME"].ToString(), int.Parse(item["PRICE"].ToString()));
-            //    //tbStore.CreateTB(out tb, TBType.Deco, "Deco", 500); 
-            //    OptionList.Add(tb);
-            //}
+            foreach (DataRow item in table.Rows)
+            {
+                TB tb;
+                TextBlockStore tbStore = new TextBlockStore();
+                tbStore.CreateTB(out tb, TBType.Deco, item["NAME"].ToString(), int.Parse(item["PRICE"].ToString()));
+                //tbStore.CreateTB(out tb, TBType.Deco, "Deco", 500); 
+                OptionList.Add(tb);
+            }
 
-            TextBlockStore tbStore = new TextBlockStore();
+            //TextBlockStore tbStore = new TextBlockStore();
 
-            TB tb0;
-            tbStore.CreateTB(out tb0, TBType.Deco, "Shot", 500);
-            OptionList.Add(tb0);
+            //TB tb0;
+            //tbStore.CreateTB(out tb0, TBType.Deco, "Shot", 500);
+            //OptionList.Add(tb0);
 
-            TB tb1;
-            tbStore.CreateTB(out tb1, TBType.Deco, "휘핑크림", 1000);
-            OptionList.Add(tb1);
+            //TB tb1;
+            //tbStore.CreateTB(out tb1, TBType.Deco, "휘핑크림", 1000);
+            //OptionList.Add(tb1);
 
-            TB tb2;
-            tbStore.CreateTB(out tb2, TBType.Deco, "시나몬", 1000);
-            OptionList.Add(tb2);
+            //TB tb2;
+            //tbStore.CreateTB(out tb2, TBType.Deco, "시나몬", 1000);
+            //OptionList.Add(tb2);
 
-            TB tb;
-            tbStore.CreateTB(out tb, TBType.Deco, "초코", 500);
-            OptionList.Add(tb);
+            //TB tb;
+            //tbStore.CreateTB(out tb, TBType.Deco, "초코", 500);
+            //OptionList.Add(tb);
         }
         private void CreateDrink(string name, int price)
         {
